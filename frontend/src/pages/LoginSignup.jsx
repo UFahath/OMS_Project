@@ -22,14 +22,15 @@ const LoginSignup = () => {
     };
 
     // handle submit
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (action == "login") {
             const payload = {
                 email : formData.email,
                 password : formData.password
             }
          
-
+            console.log(payload);
+            
         }
 
         if (action == "signup") {
@@ -38,7 +39,12 @@ const LoginSignup = () => {
                 ...formData,
             };
          
+            console.log(payload);
 
+            const res = await axios.post('http://localhost:5000/api/signup')
+            console.log(res);
+            
+            
            
         }
     };
