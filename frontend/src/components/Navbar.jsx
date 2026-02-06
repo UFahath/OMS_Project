@@ -4,7 +4,7 @@ import AuthContext from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
-  const { isLoggedIn, userRole } = useContext(AuthContext)
+  const { isLoggedIn, userRole, logout } = useContext(AuthContext)
 
   return (
     <nav className="relative bg-gray-800">
@@ -29,7 +29,7 @@ export default function Navbar() {
                   </Link>
                 }
                 { userRole == "customer" ?
-                  <Link to="" className="text-white">
+                  <Link to="/product-list" className="text-white">
                     Products
                   </Link> :
                   <Link to="/supplier-products" className="text-white">
@@ -53,13 +53,22 @@ export default function Navbar() {
 
             <div className="relative ml-3">
               <div>
-                    <Link
+                    { !isLoggedIn ?
+                      <Link
                       to='/login'
-                      className="block px-4 py-2 text-sm text-white bg-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
-                    >{
-                        isLoggedIn ? "Logout" : "Sign In/ Sign UP"
-                      }
+                      className="block px-4 py-2 text-sm bg-white font-semibold rounded-2xl data-focus:bg-gray-100 data-focus:outline-hidden"
+                    >
+                     Sign In/ Sign UP
+                     
                     </Link>
+                    :
+                    <button
+                      className="block px-4 py-2 text-sm bg-white font-semibold rounded-2xl data-focus:bg-gray-100 data-focus:outline-hidden"
+                      onClick={()=>(logout())}
+                    >
+                      Logout
+                    </button>
+                    }
                   </div>
             </div>
           </div>

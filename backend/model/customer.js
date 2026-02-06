@@ -11,6 +11,7 @@ const customerSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      match: [/^\+?[0-9]{7,15}$/, "Invalid contact number"]
     },
     address: {
       type: String,
@@ -27,6 +28,7 @@ const customerSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      match: [/^\S+@\S+\.\S+$/, "Invalid email address"]
     },
     password: {
       type: String,
