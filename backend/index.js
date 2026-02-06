@@ -1,3 +1,4 @@
+
 import express from "express"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
@@ -19,6 +20,17 @@ mongoose.connect(MONGOURL).then(()=>{
 }).catch((error)=>{
 console.log(error.message);
 })
+
+
+
+
+
+
+
+
+
+
+
 
 
 
