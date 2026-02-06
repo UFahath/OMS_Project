@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 
 const SupplierProducts = () => {
 
@@ -9,9 +10,11 @@ const SupplierProducts = () => {
       <div className='flex flex-col p-2 gap-4'>
         {/* add product button */}
         <div className='p-3'>
-          <button className='text-white text-lg bg-green-600 p-2 rounded-2xl'>
+          <Link
+          to="/add-product"
+          className='text-white text-lg bg-green-600 p-2 rounded-2xl'>
             Add Product
-          </button>
+          </Link>
         </div>
         {/* products view */}
         <div className='flex gap-3 flex-wrap'>

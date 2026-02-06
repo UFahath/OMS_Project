@@ -4,7 +4,7 @@ import AuthContext from "./AuthContext";
 function AuthProvider({ children }) {
     const [userId, setUserId] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [userRole, setUserRole] = useState(null)
+    const [userRole, setUserRole] = useState("customer")
     const login = (id, role)=>{
         setIsLoggedIn(true)
         setUserId(id)

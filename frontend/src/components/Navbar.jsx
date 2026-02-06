@@ -90,13 +90,13 @@ export default function Navbar() {
                     </a>
                   </div>
                   <div>
-                    <a
-                      href="#"
+                    <Link
+                      to='/login'
                       className="block px-4 py-2 text-sm text-white bg-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
                     >{
                         isLoggedIn ? "Logout" : "Sign In/ Sign UP"
                       }
-                    </a>
+                    </Link>
                   </div>
                 </div>
               }
