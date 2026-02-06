@@ -36,7 +36,7 @@ export default function Navbar() {
                   <Link to="" className="text-white">
                     Products
                   </Link> :
-                  <Link to="" className="text-white">
+                  <Link to="/supplier-products" className="text-white">
                     My Products
                   </Link>
                 }
