@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 const AddProduct = () => {
   const [productData, setProductData] = useState({
@@ -16,15 +17,15 @@ const AddProduct = () => {
     warehousePincode: "",
   });
 
-  const categories = [
-    "Electronics",
-    "Furniture",
-    "Clothing",
-    "Groceries",
-    "Stationery",
-    "Automotive"
-  ];
+  const [categories, setCategories] = useState([]);
 
+  const fetchCategories = async () => {
+    const res = await axios.get('http://localhost:5000/api/productCategory');
+    setCategories(res.data.categories)
+  }
+  useEffect(() => {
+    fetchCategories()
+  }, [])
 
   // Handle input change
   const handleChange = (e) => {
@@ -47,9 +48,6 @@ const AddProduct = () => {
     };
 
     console.log("Product payload:", payload);
-
-    // Example API call
-    // axios.post("/api/supplier/products", payload)
   };
 
   return (
@@ -82,9 +80,9 @@ const AddProduct = () => {
                 Select Product Category
               </option>
 
-              {categories.map((cat, index) => (
-                <option key={index} value={cat}>
-                  {cat}
+              {categories.map((cat) => (
+                <option key={cat.category_id} value={cat.category_name}>
+                  {cat.category_name}
                 </option>
               ))}
             </select>

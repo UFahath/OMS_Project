@@ -14,7 +14,7 @@ export const signup = async (req, res) => {
         try {
             const isExist = await Supplier.findOne({ useremail: email });
             if (isExist) {
-                res.status(409).json({ msg: "User already exist" })
+                return res.status(409).json({ msg: "User already exist" })
             } else {
                 const hashedPwd = await bcrypt.hash(password, 10);
                 const new_user = await Supplier.create({
@@ -30,10 +30,11 @@ export const signup = async (req, res) => {
                     { expiresIn: "2d" }
                 )
 
-                res.status(201).json({ userid: new_user._id, role: role, token })
+                return res.status(201).json({ userid: new_user._id, role: role, token })
             }
         } catch (error) {
             console.log(error);
+            return res.status(500).json({ msg: "Server error" });
         }
     }
 
@@ -41,7 +42,7 @@ export const signup = async (req, res) => {
         try {
             const isExist = await Customer.findOne({ useremail: email });
             if (isExist) {
-                res.status(409).json({ msg: "User already exist" })
+                return res.status(409).json({ msg: "User already exist" })
             } else {
                 const hashedPwd = await bcrypt.hash(password, 10);
                 const new_user = await Customer.create({
@@ -56,11 +57,11 @@ export const signup = async (req, res) => {
                     process.env.SECRET_KEY,
                     { expiresIn: "2d" }
                 )
-                res.status(201).json({ userid: new_user._id, role: role, token })
-                res.status(201).json({ userid: new_user._id, role: role, name: new_user.name, token })
+                return res.status(201).json({ userid: new_user._id, role: role, token })
             }
         } catch (error) {
             console.log(error);
+            return res.status(500).json({ msg: "Server error" });
         }
     }
 }
@@ -80,15 +81,15 @@ export const login = async (req, res) => {
         }
         if (!user) return res.status(404).json({ msg: "User not exists" });
         const match = bcrypt.compareSync(password, user.password)
-        if (!match) res.status(401).json({ msg: "Incorrect password" })
+        if (!match) return res.status(401).json({ msg: "Incorrect password" })
         const token = jwt.sign(
             { id: user.id, email: user.email },
             process.env.SECRET_KEY,
             { expiresIn: "2d" }
         )
-        res.status(200).json({ userid: user._id, role: role, token })
+        return res.status(200).json({ userid: user._id, role: role, token })
     } catch (error) {
         console.log(error);
-
+        return res.status(500).json({ msg: "Server error" });
     }
 }
