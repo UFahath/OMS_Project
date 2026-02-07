@@ -1,10 +1,11 @@
-import ProductCategory from "../models/ProductCategory.js";
+// import ProductCategory from "../models/ProductCategoryModel.js";
+
+import ProductCategory from "../model/productCategoryModel.js";
 
 //CreateProductCategory
 export const createProductCategory = async (req, res) => {
   try {
     const {
-      category_id,
       category_name,
       description,
       parent_category_id = null,
@@ -12,23 +13,22 @@ export const createProductCategory = async (req, res) => {
     } = req.body;
 
    
-    if (!category_id || !category_name) {
+    if (!category_name) {
       return res.status(400).json({
-        msg: "category_id and category_name are required",
+        msg: "Category_name required",
       });
     }
 
 
-    const existingCategory = await ProductCategory.findOne({ category_id });
+    const existingCategory = await ProductCategory.findOne({ category_name });
     if (existingCategory) {
       return res.status(409).json({
-        msg: "category_id already exists",
+        msg: "category already exists",
       });
     }
 
 
     const newCategory = await ProductCategory.create({
-      category_id,
       category_name,
       description,
       parent_category_id,

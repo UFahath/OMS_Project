@@ -1,6 +1,6 @@
 import express from 'express'
 
-import { signup } from '../controller/loginController.js';
+import { signup, login } from '../controller/loginController.js';
 import { createProductCategory,getProductCategory } from '../controller/productCategoryController.js';
 const router = express.Router();
 
