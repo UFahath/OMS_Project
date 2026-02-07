@@ -37,7 +37,7 @@ export default function Navbar() {
                   </Link>
                 }
                 { userRole == "customer" ?
-                  <Link to="" className="text-white">
+                  <Link to="/customer-orders" className="text-white">
                     My Orders
                   </Link> :
                   <Link to="" className="text-white">
