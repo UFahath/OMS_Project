@@ -2,14 +2,6 @@ import mongoose from "mongoose";
 
 const SupplierSchema = new mongoose.Schema(
   {
-    supplier_id: {
-      type: String,          
-      required: true,
-      unique: true,
-      index: true,
-      trim: true
-    },
-
     supplier_name: {
       type: String,
       required: true,

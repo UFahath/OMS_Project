@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import axios from 'axios';
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext";
 
 const LoginSignup = () => {
     const [action, setAction] = useState("login");
     const [role, setRole] = useState("customer");
+    const {login, logout} = useContext(AuthContext)
 
     const [formData, setFormData] = useState({
         name: "",
@@ -25,27 +29,26 @@ const LoginSignup = () => {
     const handleSubmit = async () => {
         if (action == "login") {
             const payload = {
-                email : formData.email,
-                password : formData.password
+                email: formData.email,
+                password: formData.password,
+                role : role
             }
-         
+
             console.log(payload);
-            
+
         }
 
         if (action == "signup") {
             const payload = {
-                role,   // customer or supplier
+                role,
                 ...formData,
             };
-         
-            console.log(payload);
 
-            const res = await axios.post('http://localhost:5000/api/signup')
-            console.log(res);
-            
-            
-           
+            console.log(payload);
+            const res = await axios.post('http://localhost:5000/api/signup', payload);
+            console.log("response:", res);
+            // login(res.id, res.role)
+
         }
     };
 
@@ -77,7 +80,7 @@ const LoginSignup = () => {
                 </div>
 
                 {/* Role Selection */}
-                {action === "signup" && (
+                {action === "signup" ?
                     <div className="mb-6 space-y-3">
                         <p className="font-semibold text-gray-700">Select Role</p>
 
@@ -105,11 +108,22 @@ const LoginSignup = () => {
                             <span>Supplier</span>
                         </label>
                     </div>
-                )}
+                    :
+                    <div className="flex gap-5 justify-center mb-3">
+                        <button className={`${role == "customer" ? "text-indigo-600" : "text-gray-500"}  p-1 rounded cursor-pointer`}
+                            onClick={() => (setRole("customer"))}>
+                            Customer
+                        </button>
+                        |
+                        <button className={`${role == "supplier" ? "text-indigo-600" : "text-gray-500"}  p-1 rounded cursor-pointer`}
+                            onClick={() => (setRole("supplier"))}>
+                            Supplier
+                        </button>
+                    </div>
+                }
 
                 {/* Form Inputs */}
                 <div className="space-y-4">
-
                     {action === "signup" && (
                         <>
                             <input
@@ -161,7 +175,7 @@ const LoginSignup = () => {
 
                     <button
                         onClick={handleSubmit}
-                        className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700"
+                        className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 cursor-pointer"
                     >
                         {action === "login" ? "Login" : "Sign Up"}
                     </button>
