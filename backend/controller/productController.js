@@ -15,5 +15,4 @@ async function getAllProducts(req, res) {
 }
 
 
-
 export default getAllProducts
