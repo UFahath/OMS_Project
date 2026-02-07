@@ -7,7 +7,6 @@ import { Customer } from '../model/customer.js';
 export const signup = async (req, res) => {
 
     const { address, email, name, password, phone, role } = req.body;
-    console.log(role);
     if (!address || !email || !name || !password || !phone || !role) {
         return res.status(400).json({ msg: "Enter all the requireed fields" })
     }
@@ -25,14 +24,11 @@ export const signup = async (req, res) => {
                     useremail: email,
                     password: hashedPwd
                 });
-                console.log("New user", new_user);
-
                 const token = jwt.sign(
                     { userid: new_user._id, role: role },
                     process.env.SECRET_KEY,
                     { expiresIn: "2d" }
                 )
-                console.log(token);
                 res.status(201).json({ userid: new_user._id, role: role, name: new_user.supplier_name, token })
             }
         } catch (error) {
@@ -59,7 +55,6 @@ export const signup = async (req, res) => {
                     process.env.SECRET_KEY,
                     { expiresIn: "2d" }
                 )
-                console.log(token);
                 res.status(201).json({ userid: new_user._id, role: role, name: new_user.name, token })
             }
         } catch (error) {
@@ -81,17 +76,14 @@ export const login = async (req, res) => {
         } else {
             user = await Supplier.findOne({ useremail: email })
         }
-        // console.log(user);
         if (!user) return res.status(404).json({ msg: "User not exists" });
         const match = bcrypt.compareSync(password, user.password)
-        // console.log(match);
         if (!match) res.status(401).json({ msg: "Incorrect password" })
         const token = jwt.sign(
             { id: user.id, email: user.email },
             process.env.SECRET_KEY,
             { expiresIn: "2d" }
         )
-        console.log(token);
         res.status(200).json({ msg: "Login successfull", token })
 
     } catch (error) {
