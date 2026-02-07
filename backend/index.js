@@ -7,15 +7,15 @@ import router from "./routes/router.js"
 
 
 const app = express()
-
+app.set("json spaces",2);
 app.use(cors())
 app.use(express.json())
 dotenv.config()
 
 app.use('/api', router)
 
-const PORT = process.env.PORT || 8000
-
+const PORT = process.env.MONGO_DB_PORT|| 8000;
+const PORT1= process.env.SERVER_PORT || 9000;
 const MONGOURL = process.env.MONGO_URL
 
 mongoose.connect(MONGOURL).then(()=>{
@@ -29,8 +29,8 @@ console.log(error.message);
 
 
 
-app.listen(5000,()=>{
-    console.log(`http://localhost:${5000}`);
+app.listen(PORT1,()=>{
+    console.log(`http://localhost:${PORT1}`);
 })
 
 
