@@ -17,13 +17,11 @@ const productSchema = new mongoose.Schema(
       ref: "ProductCategory",
       required: true,
     },
-
     price: {
       type: Number,
       required: true,
-      min: 0,
+      min: 1,
     },
-
     status: {
       type: String,
       enum: ["ACTIVE", "INACTIVE", "OUT_OF_STOCK"],

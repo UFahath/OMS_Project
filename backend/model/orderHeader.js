@@ -23,7 +23,7 @@ const orderHeaderSchema = new mongoose.Schema({
     default: Date.now,
     required: true
   }
-}, {
+},{
   timestamps: true
 });
 
