@@ -29,7 +29,8 @@ export const signup = async (req, res) => {
                     process.env.SECRET_KEY,
                     { expiresIn: "2d" }
                 )
-                res.status(201).json({ userid: new_user._id, role: role, name: new_user.supplier_name, token })
+
+                res.status(201).json({ userid: new_user._id, role: role, token })
             }
         } catch (error) {
             console.log(error);
@@ -55,6 +56,7 @@ export const signup = async (req, res) => {
                     process.env.SECRET_KEY,
                     { expiresIn: "2d" }
                 )
+                res.status(201).json({ userid: new_user._id, role: role, token })
                 res.status(201).json({ userid: new_user._id, role: role, name: new_user.name, token })
             }
         } catch (error) {
@@ -84,8 +86,7 @@ export const login = async (req, res) => {
             process.env.SECRET_KEY,
             { expiresIn: "2d" }
         )
-        res.status(200).json({ msg: "Login successfull", token })
-
+        res.status(200).json({ userid: user._id, role: role, token })
     } catch (error) {
         console.log(error);
 

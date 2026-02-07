@@ -1,5 +1,5 @@
 import React, { useState } from "react";
- 
+
 const AddProduct = () => {
   const [productData, setProductData] = useState({
     productName: "",
@@ -15,7 +15,17 @@ const AddProduct = () => {
     warehouseCountry: "",
     warehousePincode: "",
   });
- 
+
+  const categories = [
+    "Electronics",
+    "Furniture",
+    "Clothing",
+    "Groceries",
+    "Stationery",
+    "Automotive"
+  ];
+
+
   // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,36 +34,36 @@ const AddProduct = () => {
       [name]: value,
     }));
   };
- 
+
   // Handle submit
   const handleSubmit = (e) => {
     e.preventDefault();
- 
+
     const payload = {
       ...productData,
       price: Number(productData.price),
       leadTimeDays: Number(productData.leadTimeDays),
       stockQuantity: Number(productData.stockQuantity),
     };
- 
+
     console.log("Product payload:", payload);
- 
+
     // Example API call
     // axios.post("/api/supplier/products", payload)
   };
- 
+
   return (
-<div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
-<div className="bg-white w-full max-w-3xl p-8 rounded-2xl shadow-lg">
-<h2 className="text-2xl font-bold mb-6 text-gray-800">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
+      <div className="bg-white w-full max-w-3xl p-8 rounded-2xl shadow-lg">
+        <h2 className="text-2xl font-bold mb-6 text-gray-800">
           Add New Product
-</h2>
- 
+        </h2>
+
         <form onSubmit={handleSubmit} className="space-y-6">
- 
+
           {/* Product Info */}
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-<input
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input
               type="text"
               name="productName"
               placeholder="Product Name"
@@ -61,16 +71,25 @@ const AddProduct = () => {
               onChange={handleChange}
               className="input"
             />
- 
-            <input
-              type="text"
+
+            <select
               name="category"
-              placeholder="Product Category"
               value={productData.category}
               onChange={handleChange}
               className="input"
-            />
- 
+            >
+              <option value="" disabled>
+                Select Product Category
+              </option>
+
+              {categories.map((cat, index) => (
+                <option key={index} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+
+
             <input
               type="number"
               name="price"
@@ -79,7 +98,7 @@ const AddProduct = () => {
               onChange={handleChange}
               className="input"
             />
- 
+
             <input
               type="number"
               name="leadTimeDays"
@@ -88,7 +107,7 @@ const AddProduct = () => {
               onChange={handleChange}
               className="input"
             />
- 
+
             <input
               type="number"
               name="stockQuantity"
@@ -97,8 +116,8 @@ const AddProduct = () => {
               onChange={handleChange}
               className="input"
             />
-</div>
- 
+          </div>
+
           <textarea
             name="description"
             placeholder="Product Description"
@@ -106,14 +125,14 @@ const AddProduct = () => {
             onChange={handleChange}
             className="input h-28 resize-none"
           />
- 
+
           {/* Warehouse Info */}
-<h3 className="text-lg font-semibold text-gray-700">
+          <h3 className="text-lg font-semibold text-gray-700">
             Warehouse Details
-</h3>
- 
+          </h3>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-<input
+            <input
               type="text"
               name="warehouseName"
               placeholder="Warehouse Name"
@@ -121,7 +140,7 @@ const AddProduct = () => {
               onChange={handleChange}
               className="input"
             />
- 
+
             <input
               type="text"
               name="warehouseCity"
@@ -130,7 +149,7 @@ const AddProduct = () => {
               onChange={handleChange}
               className="input"
             />
- 
+
             <input
               type="text"
               name="warehouseState"
@@ -139,7 +158,7 @@ const AddProduct = () => {
               onChange={handleChange}
               className="input"
             />
- 
+
             <input
               type="text"
               name="warehouseCountry"
@@ -148,7 +167,7 @@ const AddProduct = () => {
               onChange={handleChange}
               className="input"
             />
- 
+
             <input
               type="text"
               name="warehousePincode"
@@ -157,8 +176,8 @@ const AddProduct = () => {
               onChange={handleChange}
               className="input"
             />
-</div>
- 
+          </div>
+
           <textarea
             name="warehouseAddress"
             placeholder="Warehouse Address"
@@ -166,17 +185,17 @@ const AddProduct = () => {
             onChange={handleChange}
             className="input h-24 resize-none"
           />
- 
+
           <button
             type="submit"
             className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition"
->
+          >
             Add Product
-</button>
-</form>
-</div>
-</div>
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
- 
+
 export default AddProduct;

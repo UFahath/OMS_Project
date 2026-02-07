@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import axios from 'axios';
 import { useContext } from "react";
 import AuthContext from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const LoginSignup = () => {
     const [action, setAction] = useState("login");
     const [role, setRole] = useState("customer");
-    const {login, logout} = useContext(AuthContext)
+    const { login } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         name: "",
@@ -15,7 +17,7 @@ const LoginSignup = () => {
         email: "",
         password: "",
     });
-
+    const [errorMessage, setErrorMessage] = useState("");
     // handle input change
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -31,10 +33,25 @@ const LoginSignup = () => {
             const payload = {
                 email: formData.email,
                 password: formData.password,
-                role : role
+                role: role
             }
 
             console.log(payload);
+            try {
+                const res = await axios.post('http://localhost:5000/api/login', payload);
+                console.log("response:", res);
+                login(res.data.id, res.data.role, res.data.token);
+                if (res.data.role === "customer") {
+                    navigate('/product-list')
+                } else {
+                    navigate('/supplier-products')
+                }
+
+            } catch (error) {
+                console.log(error.response.data);
+                setErrorMessage(error.response.data.msg);
+            }
+
 
         }
 
@@ -45,10 +62,20 @@ const LoginSignup = () => {
             };
 
             console.log(payload);
-            const res = await axios.post('http://localhost:5000/api/signup', payload);
-            console.log("response:", res);
-            // login(res.id, res.role)
+            try {
+                const res = await axios.post('http://localhost:5000/api/signup', payload);
+                console.log("response:", res);
+                login(res.data.id, res.data.role, res.data.token)
+                if (res.data.role == "customer") {
+                    navigate('/product-list')
+                } else {
+                    navigate('/supplier-products')
+                }
 
+            } catch (error) {
+                console.log(error.response.data);
+                setErrorMessage(error.response.data.msg);
+            }
         }
     };
 
@@ -172,6 +199,10 @@ const LoginSignup = () => {
                         onChange={handleChange}
                         className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500"
                     />
+
+                    {errorMessage &&
+                        <p className="text-red-600 text-sm"> {errorMessage} </p>
+                    }
 
                     <button
                         onClick={handleSubmit}

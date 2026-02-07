@@ -2,14 +2,6 @@ import mongoose from "mongoose";
 
 const ProductCategorySchema = new mongoose.Schema(
   {
-    category_id: {
-      type: String,           
-      required: true,
-      unique: true,
-      index: true,
-      trim: true
-    },
-
     category_name: {
       type: String,
       required: true,
@@ -42,8 +34,6 @@ const ProductCategorySchema = new mongoose.Schema(
     versionKey: false
   }
 );
-
-ProductCategorySchema.index({ category_id: 1 }, { unique: true });
 
 
 ProductCategorySchema.index(
