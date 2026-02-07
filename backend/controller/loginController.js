@@ -3,11 +3,14 @@ import jwt from 'jsonwebtoken';
 import Supplier from "../model/supplierModel.js";
 import { Customer } from '../model/customer.js';
 
+// Signup handler 
 export const signup = async (req, res) => {
 
     const { address, email, name, password, phone, role } = req.body;
     console.log(role);
-
+    if (!address || !email || !name || !password || !phone || !role) {
+        return res.status(400).json({ msg: "Enter all the requireed fields" })
+    }
     if (role == "supplier") {
         try {
             const isExist = await Supplier.findOne({ useremail: email });
@@ -20,7 +23,7 @@ export const signup = async (req, res) => {
                     contact_number: phone,
                     address: address,
                     useremail: email,
-                    password: password
+                    password: hashedPwd
                 });
                 console.log("New user", new_user);
 
@@ -38,44 +41,44 @@ export const signup = async (req, res) => {
     }
 
     if (role == "customer") {
-        if (role == "supplier") {
-            try {
-                const isExist = await Customer.findOne({ useremail: email });
-                if (isExist) {
-                    res.status(409).json({ msg: "User already exist" })
-                } else {
-                    const hashedPwd = await bcrypt.hash(password, 10);
-                    const new_user = await Customer.create({
-                        name: name,
-                        phoneNumber: phone,
-                        address: address,
-                        useremail: email,
-                        password: password
-                    });
-                    const token = jwt.sign(
-                        { userid: new_user._id, role: role },
-                        process.env.SECRET_KEY,
-                        { expiresIn: "2d" }
-                    )
-                    console.log(token);
-                    res.status(201).json({ userid: new_user._id, role: role, name: new_user.name, token })
-                }
-            } catch (error) {
-                console.log(error);
+        try {
+            const isExist = await Customer.findOne({ useremail: email });
+            if (isExist) {
+                res.status(409).json({ msg: "User already exist" })
+            } else {
+                const hashedPwd = await bcrypt.hash(password, 10);
+                const new_user = await Customer.create({
+                    name: name,
+                    phoneNumber: phone,
+                    address: address,
+                    useremail: email,
+                    password: hashedPwd
+                });
+                const token = jwt.sign(
+                    { userid: new_user._id, role: role },
+                    process.env.SECRET_KEY,
+                    { expiresIn: "2d" }
+                )
+                console.log(token);
+                res.status(201).json({ userid: new_user._id, role: role, name: new_user.name, token })
             }
+        } catch (error) {
+            console.log(error);
         }
     }
-
 }
 
-
+// Login handler
 export const login = async (req, res) => {
     const { email, password, role } = req.body;
+    if (!email || !password || !role) {
+        return res.status(400).json({ msg: "Enter all the requireed fields" })
+    }
     try {
         let user = {};
         if (role === "customer") {
             user = await Customer.findOne({ useremail: email })
-        }else{
+        } else {
             user = await Supplier.findOne({ useremail: email })
         }
         // console.log(user);
