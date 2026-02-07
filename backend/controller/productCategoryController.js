@@ -12,13 +12,11 @@ export const createProductCategory = async (req, res) => {
       status = "ACTIVE",
     } = req.body;
 
-   
     if (!category_name) {
       return res.status(400).json({
         msg: "Category_name required",
       });
     }
-
 
     const existingCategory = await ProductCategory.findOne({ category_name });
     if (existingCategory) {
@@ -26,7 +24,6 @@ export const createProductCategory = async (req, res) => {
         msg: "category already exists",
       });
     }
-
 
     const newCategory = await ProductCategory.create({
       category_name,
@@ -39,7 +36,7 @@ export const createProductCategory = async (req, res) => {
       msg: "Product category created successfully",
       data: newCategory,
     });
-  } catch (error){
+  } catch (error) {
     if (error.code === 11000) {
       return res.status(409).json({
         msg: "Duplicate value found",
@@ -55,11 +52,24 @@ export const createProductCategory = async (req, res) => {
 };
 
 //@ReadProductCategory
-export const getProductCategory = async(_,res)=>{
-  try{
-   const productCategory = await ProductCategory.find({}).sort({category_name:1});
-   return res.status(200).json({msg:"Product category retrieved",data:productCategory});
-  }catch(err){
-    res.status(500).json({msg:"Internal server error",error:err.message});
+export const getProductCategory = async (_, res) => {
+  try {
+    const productCategory = await ProductCategory.find({}).sort({
+      category_name: 1,
+    });
+
+   
+
+    const category_details = productCategory?.map(
+      ({ category_name,_id }) => ({category_name,category_id:_id})
+    );
+
+
+    return res
+      .status(200)
+      .json({ msg: "Product category retrieved", data: category_details });
+      
+  } catch (err) {
+    res.status(500).json({ msg: "Internal server error", error: err.message });
   }
-}
+};
