@@ -17,7 +17,7 @@ function AuthProvider({ children }) {
     const logout = ()=>{
         setUserId(null)
         setIsLoggedIn(false)
-        setUserRole(null)
+        setUserRole("customer")
         setToken(null)
         navigate('/')
     }

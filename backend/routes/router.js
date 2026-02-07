@@ -1,9 +1,12 @@
 import express from 'express'
-import { login, signup } from '../controller/loginController.js';
 
+import { signup } from '../controller/loginController.js';
+import { createProductCategory,getProductCategory } from '../controller/productCategoryController.js';
 const router = express.Router();
 
-router.post('/signup', signup );    // http://localhost:5000/api/signup
+router.post('/signup', signup );
 router.post('/login', login);       // http://localhost:5000/api/login
+router.post('/productCategory',createProductCategory);
+router.get('/productCategory',getProductCategory);
 
 export default router
