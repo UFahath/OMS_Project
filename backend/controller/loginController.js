@@ -33,7 +33,7 @@ export const signup = async (req, res) => {
                     { expiresIn: "2d" }
                 )
                 console.log(token);
-                res.status(201).json({ userid: new_user._id, role: role, name: new_user.supplier_name, token })
+                res.status(201).json({ userid: new_user._id, role: role, token })
             }
         } catch (error) {
             console.log(error);
@@ -60,7 +60,7 @@ export const signup = async (req, res) => {
                     { expiresIn: "2d" }
                 )
                 console.log(token);
-                res.status(201).json({ userid: new_user._id, role: role, name: new_user.name, token })
+                res.status(201).json({ userid: new_user._id, role: role, token })
             }
         } catch (error) {
             console.log(error);
@@ -92,7 +92,7 @@ export const login = async (req, res) => {
             { expiresIn: "2d" }
         )
         console.log(token);
-        res.status(200).json({ msg: "Login successfull", token })
+        res.status(200).json({ userid: user._id, role: role, token })
 
     } catch (error) {
         console.log(error);

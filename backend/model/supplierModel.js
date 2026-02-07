@@ -35,8 +35,7 @@ const SupplierSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      minlength: 8,
-      select: false 
+      minlength: 8
     }
   },
   {
@@ -46,9 +45,12 @@ const SupplierSchema = new mongoose.Schema(
 );
 
 
-SupplierSchema.index({ supplier_id: 1 }, { unique: true });
-SupplierSchema.index({ useremail: 1 }, { unique: true });
+// SupplierSchema.index({ supplier_id: 1 }, { unique: true });
+// SupplierSchema.index({ useremail: 1 }, { unique: true });
 
 
 const Supplier = mongoose.model("Supplier", SupplierSchema);
 export default Supplier;
+
+
+
