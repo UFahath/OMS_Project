@@ -1,6 +1,6 @@
 // import ProductCategory from "../models/ProductCategoryModel.js";
 
-import ProductCategory from "../model/productCategoryModel.js";
+import { ProductCategory } from "../model/productCategoryModel.js";
 
 //CreateProductCategory
 export const createProductCategory = async (req, res) => {
@@ -58,14 +58,15 @@ export const getProductCategory = async (_, res) => {
       category_name: 1,
     });
 
-    const category_details = productCategory?.map(
-      ({ category_name,_id }) => ({category_name,category_id:_id})
-    );
+    const category_details = productCategory?.map(({ category_name, _id }) => ({
+      category_name,
+      category_id: _id,
+    }));
 
-    return res
-      .status(200)
-      .json({ msg: "Product category retrieved", categories: category_details });
-      
+    return res.status(200).json({
+      msg: "Product category retrieved",
+      categories: category_details,
+    });
   } catch (err) {
     res.status(500).json({ msg: "Internal server error", error: err.message });
   }
