@@ -1,4 +1,4 @@
-import express, { Router } from "express";
+import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -9,7 +9,6 @@ app.use(cors());
 app.use(express.json());
 dotenv.config();
 
-app.use("/api", router);
 
 const PORT = process.env.PORT || 8000;
 const MONGOURL = process.env.MONGO_URL;
@@ -25,3 +24,8 @@ mongoose
   .catch((error) => {
     console.log(error.message);
   });
+
+
+app.use("/api", router);
+
+
