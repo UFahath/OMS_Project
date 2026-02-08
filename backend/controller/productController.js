@@ -82,7 +82,7 @@ const createProducts = async (req, res) => {
       session.endSession();
       return res.status(200).json({ msg: `Existing Inventory Updated` });
     } else {
-      // 1️) warehouse
+      // warehouse
       const warehouse = await Warehouse.create(
         [
           {
@@ -97,7 +97,7 @@ const createProducts = async (req, res) => {
         { session }
       );
 
-      // 2️) product
+      // product
       const product = await Product.create(
         [
           {
@@ -111,7 +111,7 @@ const createProducts = async (req, res) => {
         { session }
       );
 
-      // 3️) inventory
+      //  inventory
       await Inventory.create(
         [
           {
@@ -123,7 +123,7 @@ const createProducts = async (req, res) => {
         { session }
       );
 
-      // 4️) supplier_product
+      // supplier_product
       await Supplier.create(
         [
           {
