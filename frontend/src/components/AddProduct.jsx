@@ -1,8 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import AuthContext from "../context/AuthContext";
 
 const AddProduct = () => {
+  const {userId} = useContext(AuthContext)
   const [productData, setProductData] = useState({
+    supplier_id: userId,
     productName: "",
     description: "",
     category: "",
@@ -16,9 +19,7 @@ const AddProduct = () => {
     warehouseCountry: "",
     warehousePincode: "",
   });
-
   const [categories, setCategories] = useState([]);
-
   const fetchCategories = async () => {
     const res = await axios.get('http://localhost:5000/api/productCategory');
     setCategories(res.data.categories)
@@ -81,12 +82,11 @@ const AddProduct = () => {
               </option>
 
               {categories.map((cat) => (
-                <option key={cat.category_id} value={cat.category_name}>
+                <option key={cat.category_id} value={cat.category_id}>
                   {cat.category_name}
                 </option>
               ))}
             </select>
-
 
             <input
               type="number"

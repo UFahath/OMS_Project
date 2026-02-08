@@ -7,7 +7,7 @@ import { Customer } from "../model/customer.js";
 export const signup = async (req, res) => {
   const { address, email, name, password, phone, role } = req.body;
   if (!address || !email || !name || !password || !phone || !role) {
-    return res.status(400).json({ msg: "Enter all the requireed fields" });
+    return res.status(400).json({ msg: "Enter all the required fields" });
   }
   if (role == "supplier") {
     try {
@@ -26,7 +26,7 @@ export const signup = async (req, res) => {
         const token = jwt.sign(
           { userid: new_user._id, role: role },
           process.env.SECRET_KEY,
-          { expiresIn: "2d" },
+          { expiresIn: "2d" }
         );
 
         return res
@@ -56,7 +56,7 @@ export const signup = async (req, res) => {
         const token = jwt.sign(
           { userid: new_user._id, role: role },
           process.env.SECRET_KEY,
-          { expiresIn: "2d" },
+          { expiresIn: "2d" }
         );
         return res
           .status(201)
@@ -88,7 +88,7 @@ export const login = async (req, res) => {
     const token = jwt.sign(
       { id: user.id, email: user.email },
       process.env.SECRET_KEY,
-      { expiresIn: "2d" },
+      { expiresIn: "2d" }
     );
     return res.status(200).json({ userid: user._id, role: role, token });
   } catch (error) {

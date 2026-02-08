@@ -16,10 +16,5 @@ const SupplierSchema = new mongoose.Schema({
     required: true,
   },
 });
-
-export const Supplier = mongoose.model("Supplier", SupplierSchema);
-
-
-
-
+export const Supplier = mongoose.model("SupplierProduct", SupplierSchema);
 

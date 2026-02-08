@@ -40,7 +40,7 @@ const LoginSignup = () => {
             try {
                 const res = await axios.post('http://localhost:5000/api/login', payload);
                 console.log("response:", res);
-                login(res.data.id, res.data.role, res.data.token);
+                login(res.data.userid, res.data.role, res.data.token);                
                 if (res.data.role === "customer") {
                     navigate('/product-list')
                 } else {
@@ -65,7 +65,7 @@ const LoginSignup = () => {
             try {
                 const res = await axios.post('http://localhost:5000/api/signup', payload);
                 console.log("response:", res);
-                login(res.data.id, res.data.role, res.data.token)
+                login(res.data.userid, res.data.role, res.data.token)                
                 if (res.data.role == "customer") {
                     navigate('/product-list')
                 } else {
