@@ -63,7 +63,6 @@ const createProducts = async (req, res) => {
     const productExist = await Product.findOne({ productName }).session(
       session
     );
-
     if (productExist) {
       let productId = productExist._id;
       let inventory = await Inventory.findOne({ product: productId }).session(

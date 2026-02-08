@@ -8,7 +8,6 @@ const ProductCategorySchema = new mongoose.Schema(
       trim: true,
       maxlength: 150
     },
-
     description: {
       type: String,
       trim: true,

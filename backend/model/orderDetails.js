@@ -26,5 +26,3 @@ const orderDetailSchema = new mongoose.Schema({
 
 export const OrderDetails = mongoose.model("OrderDetails", orderDetailSchema);
 
-
-
