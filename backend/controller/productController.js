@@ -35,7 +35,7 @@ const createProducts = async (req, res) => {
       warehouseCountry,
       warehousePincode,
       warehouseAdd,
-      supplierId
+      supplierId,
     } = req.body;
 
     if (
@@ -66,7 +66,9 @@ const createProducts = async (req, res) => {
 
     if (productExist) {
       let productId = productExist._id;
-      let inventory = await Inventory.findOne({ product: productId }).session(session);
+      let inventory = await Inventory.findOne({ product: productId }).session(
+        session
+      );
       if (!inventory) {
         await session.abortTransaction();
         session.endSession();
@@ -75,7 +77,7 @@ const createProducts = async (req, res) => {
           .json({ msg: "Inventory not found for this Product" });
       }
       inventory.stockQuantity += Number(stockQuantity);
-      await inventory.save({session});
+      await inventory.save({ session });
       await session.commitTransaction();
       session.endSession();
       return res.status(200).json({ msg: `Existing Inventory Updated` });
@@ -125,7 +127,7 @@ const createProducts = async (req, res) => {
       await Supplier.create(
         [
           {
-            Supplier:supplierId,
+            Supplier: supplierId,
             leadTimeDays: leadTime,
             Product: product[0]._id,
           },
