@@ -44,6 +44,11 @@ export default function Navbar() {
                     Orders Recieved
                   </Link>
                 }
+                { userRole == "customer" &&
+                  <Link to="/support-ticket" className="text-white">
+                    Help & Suppport
+                  </Link>
+                }
               </div>
             </div>
           </div>
