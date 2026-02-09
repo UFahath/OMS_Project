@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
-import { Supplier } from "../model/supplierProduct.js";
+import {Supplier} from "../model/supplierProduct.js";
+
 
 const getSupplierProduct = async (req, res) => {
   try {
-    const supplierIdStr = req.user?.id || req.user?._id;
+    const {id:supplierIdStr} = req.user;
 
     if (!supplierIdStr) {
-      return res.status(401).json({ msg: "Unauthorized: Missing user id" });
+      return res.status(401).json({ msg: "Unauthorized" });
     }
 
     if (!mongoose.Types.ObjectId.isValid(supplierIdStr)) {
@@ -15,24 +16,20 @@ const getSupplierProduct = async (req, res) => {
 
     const supplierId = new mongoose.Types.ObjectId(supplierIdStr);
 
-    const supplierProduct = await Supplier.find({ Supplier: supplierId })
-    if (!supplierProduct.length) {
-      return res.status(404).json({ msg: "SupplierIdMismatch" });
+    const supplierProducts = await Supplier
+      .find({ Supplier: supplierId })
+      .populate("Product");
+
+    if (!supplierProducts.length) {
+      return res.status(404).json({ msg: "No products found" });
     }
-     
-    // supplierProduct.forEach(({key})=>{
-    //     if(key === "")
-    // })
-    // for(let key in supplierProduct){
-    //     for(let key1 in supplierProduct[key]){
-    //         if(key1 === "Product"){
-    //             console.log(supplierProduct[key])
-    //         }
-    //     }
-    // }
-    return res.status(200).json({supplierProduct});
+
+    const products = supplierProducts.map(item => item.Product);
+
+    return res.status(200).json({ products });
+
   } catch (err) {
-    return res.status(500).json({ msg: "Internal Server Error", error: err.message });
+    return res.status(500).json({ msg: "Internal Server Error" });
   }
 };
 
