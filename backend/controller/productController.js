@@ -66,7 +66,6 @@ const createProducts = async (req, res) => {
     const productExist = await Product.findOne({ productName }).session(
       session
     );
-    console.log(productExist)
     if (productExist) {
       let productId = productExist._id;
       let inventory = await Inventory.findOne({ product: productId }).session(
@@ -156,3 +155,19 @@ const createProducts = async (req, res) => {
 };
 
 export { getAllProducts, createProducts };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
