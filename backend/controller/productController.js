@@ -11,7 +11,7 @@ import { Supplier } from "../model/supplierProduct.js";
 //getProducts
 async function getAllProducts(req, res) {
   try {
-    const products = await ProductCategory.find({});
+    const products = await Product.find({});
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -42,6 +42,8 @@ const createProducts = async (req, res) => {
     } = req.body;
 
     const {id:supplierId} = req.user;
+    console.log(`supplier id: ${supplierId}`);
+    
     if (
       !productName ||
       !productCategory ||
