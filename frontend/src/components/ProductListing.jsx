@@ -1,7 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import AuthContext from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductListing() {
+  const { token } = useContext(AuthContext);
+  const navigate = useNavigate()
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [order, setOrder] = useState({
@@ -72,7 +76,31 @@ export default function ProductListing() {
 
   const placeOrder = async () => {
     console.log("Order Payload:", order);
-    alert(`Order placed using ${order.paymentMethod}`);
+    try {
+      const res = await axios.post('http://localhost:5000/api/placeorders',
+        order,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      console.log(res);
+      const paymentDetails = {
+            OrderHeaderId: res.data.orderHeader._id,
+            amount: res.data.orderHeader.totalAmount
+          }
+      if (order.paymentMethod == "ONLINE") {
+        navigate('/online-payment', {
+          state: paymentDetails
+        }
+        )
+      } else {
+        alert(res.data.message)
+      }
+    } catch (error) {
+      console.log(error);
+    }
     setCart([]);
   };
 

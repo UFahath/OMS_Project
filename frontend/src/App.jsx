@@ -6,8 +6,10 @@ import Landing from './pages/Landing'
 import AddProduct from './components/AddProduct';
 import LoginSignup from './pages/LoginSignup';
 import ProductListing from './components/ProductListing';
-import CustomerOrders from './components/customerOrders';
 import SupportTicket from './pages/SupportTicket';
+import OnlinePayment from './components/OnlinePayment';
+import CustomerOrders from './components/CustomerOrders';
+import SupplierOrders from './components/SupplierOrders';
 
 const App = () => {
   return (
@@ -21,8 +23,10 @@ const App = () => {
           <Route path = '/supplier-products' element = {<SupplierProducts/>} />
           <Route path='/add-product' element = {<AddProduct/>} />
           <Route path='/product-list' element = {<ProductListing/>} />
-          <Route path='/customer-orders' element = {<CustomerOrders/>} />
           <Route path='/support-ticket' element = {<SupportTicket/>} />
+          <Route path='/online-payment' element={<OnlinePayment/>} />
+          <Route path='/customer-orders' element={<CustomerOrders/>} />
+          <Route path='/supplier-orders' element={<SupplierOrders/>} />
         </Routes>
 
     </>
