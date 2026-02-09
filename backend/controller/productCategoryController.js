@@ -52,7 +52,7 @@ export const createProductCategory = async (req, res) => {
 };
 
 //@ReadProductCategory
-export const getProductCategory = async (_, res) => {
+export const getProductCategory = async (req, res) => {
   try {
     const productCategory = await ProductCategory.find({}).sort({
       category_name: 1,
@@ -63,6 +63,7 @@ export const getProductCategory = async (_, res) => {
       category_id: _id,
     }));
 
+    // console.log(category_details)
     return res.status(200).json({
       msg: "Product category retrieved",
       categories: category_details,
