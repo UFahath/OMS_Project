@@ -1,17 +1,8 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 export default function ProductListing() {
-  const products = [
-    { id: 1, name: "Earthen Bottle", description: "Handmade sustainable bottle", price: 48 },
-    { id: 2, name: "Nomad Tumbler", description: "Keep drinks hot or cold", price: 35 },
-    { id: 3, name: "Focus Paper Refill", description: "Refill pads", price: 89 },
-    { id: 4, name: "Mechanical Pencil", description: "Precision writing tool", price: 35 },
-    { id: 5, name: "Focus Card Tray", description: "Elegant tray", price: 64 },
-    { id: 6, name: "Focus Multi-Pack", description: "Stationery pack", price: 39 },
-    { id: 7, name: "Brass Scissors", description: "Precision cutting", price: 50 },
-    { id: 8, name: "Carry Pouch", description: "Compact pouch", price: 32 },
-  ];
-
+  const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [order, setOrder] = useState({
     items: [],
@@ -19,12 +10,27 @@ export default function ProductListing() {
     paymentMethod: "COD",
   });
 
+  const fetchProducts = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/api/allProducts');
+      console.log(res);
+      setProducts(res.data)
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
+  useEffect(() => {
+    fetchProducts()
+  }, [])
+
   const addToCart = (product) => {
     setCart((prev) => {
-      const exists = prev.find((item) => item.id === product.id);
+      const exists = prev.find((item) => item._id === product._id);
       if (exists) {
         return prev.map((item) =>
-          item.id === product.id
+          item._id === product._id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -37,7 +43,7 @@ export default function ProductListing() {
     setCart((prev) =>
       prev
         .map((item) =>
-          item.id === id ? { ...item, quantity: item.quantity + delta } : item
+          item._id === id ? { ...item, quantity: item.quantity + delta } : item
         )
         .filter((item) => item.quantity > 0)
     );
@@ -52,7 +58,7 @@ export default function ProductListing() {
   // Build order payload whenever cart changes
   useEffect(() => {
     const items = cart.map((item) => ({
-      productId: item.id,
+      productId: item._id,
       quantity: item.quantity,
       price: item.price,
     }));
@@ -66,16 +72,6 @@ export default function ProductListing() {
 
   const placeOrder = async () => {
     console.log("Order Payload:", order);
-
-    // Example backend call
-    /*
-    await fetch("http://localhost:3000/api/order", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(order),
-    });
-    */
-
     alert(`Order placed using ${order.paymentMethod}`);
     setCart([]);
   };
@@ -86,16 +82,16 @@ export default function ProductListing() {
       <div className="mx-auto max-w-7xl px-4 py-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {products.map((product) => {
-            const inCart = cart.find((item) => item.id === product.id);
+            const inCart = cart.find((item) => item._id === product._id);
 
             return (
               <div
-                key={product.id}
+                key={product._id}
                 className="bg-white p-4 rounded-lg shadow flex flex-col justify-between"
               >
                 <div>
                   <h3 className="text-lg font-semibold text-gray-800">
-                    {product.name}
+                    {product.productName}
                   </h3>
                   <p className="text-sm text-gray-500 mt-1">
                     {product.description}
@@ -106,7 +102,7 @@ export default function ProductListing() {
                 {inCart ? (
                   <div className="mt-4 flex items-center justify-between bg-gray-100 rounded-lg p-2">
                     <button
-                      onClick={() => adjustQuantity(product.id, -1)}
+                      onClick={() => adjustQuantity(product._id, -1)}
                       className="px-4 py-2 bg-red-500 text-white rounded-lg text-xl"
                     >
                       −
@@ -115,7 +111,7 @@ export default function ProductListing() {
                       {inCart.quantity}
                     </span>
                     <button
-                      onClick={() => adjustQuantity(product.id, 1)}
+                      onClick={() => adjustQuantity(product._id, 1)}
                       className="px-4 py-2 bg-green-500 text-white rounded-lg text-xl"
                     >
                       +
@@ -144,9 +140,12 @@ export default function ProductListing() {
         ) : (
           <>
             {cart.map((item) => (
-              <div key={item.id} className="flex justify-between text-sm mb-1">
-                <span>{item.name}</span>
-                <span>{item.quantity}  ₹{item.price}</span>
+              <div key={item._id} className="flex justify-between text-sm mb-1">
+                <span>{item.productName}</span>
+                <div className="flex gap-10">
+                  <span>{item.quantity} </span>
+                  <span> ₹{item.price}</span>
+                </div>
               </div>
             ))}
 
