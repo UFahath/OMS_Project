@@ -7,6 +7,7 @@ import AddProduct from './components/AddProduct';
 import LoginSignup from './pages/LoginSignup';
 import ProductListing from './components/ProductListing';
 import CustomerOrders from './components/customerOrders';
+import SupportTicket from './pages/SupportTicket';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path='/add-product' element = {<AddProduct/>} />
           <Route path='/product-list' element = {<ProductListing/>} />
           <Route path='/customer-orders' element = {<CustomerOrders/>} />
+          <Route path='/support-ticket' element = {<SupportTicket/>} />
         </Routes>
 
     </>
