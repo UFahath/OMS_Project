@@ -18,7 +18,7 @@ router.post("/signup", signup);
 router.post("/login", login); // http://localhost:5000/api/login
 router.post("/productCategory", createProductCategory);
 router.get("/productCategory", getProductCategory);
-router.post("/addProduct", createProducts);
+router.post("/addProduct",verifyToken, createProducts); // http://localhost:5000/api/addProduct
 
 router.post("/supportTicket", verifyToken,createSupportTicket); // supportTicket 
 router.post("review",createReview)  //http://localhost:5000/api/review

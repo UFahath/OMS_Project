@@ -2,6 +2,7 @@
 
 // import ProductCategory from "../model/productCategoryModel"
 // import {ProductCategory} from "../model/productCategoryModel.js";
+import mongoose from "mongoose";
 import { Warehouse } from "../model/warehouse.js";
 import { Product } from "../model/product.js";
 import { Inventory } from "../model/inventory.js";
@@ -21,6 +22,9 @@ async function getAllProducts(req, res) {
 const createProducts = async (req, res) => {
   //since this controller uses multiple tables fields i used session (for making as one transaction)
   const session = await mongoose.startSession();
+      // start transaction
+    session.startTransaction();
+
   try {
     const {
       productName,
@@ -35,9 +39,9 @@ const createProducts = async (req, res) => {
       warehouseCountry,
       warehousePincode,
       warehouseAdd,
-      supplierId,
     } = req.body;
 
+    const {id:supplierId} = req.user;
     if (
       !productName ||
       !productCategory ||
@@ -55,14 +59,12 @@ const createProducts = async (req, res) => {
     ) {
       return res.status(400).json({ msg: "All Fields Are Required" });
     }
-
-    // start transaction
-    session.startTransaction();
-
+ 
     //check product
     const productExist = await Product.findOne({ productName }).session(
       session
     );
+    console.log(productExist)
     if (productExist) {
       let productId = productExist._id;
       let inventory = await Inventory.findOne({ product: productId }).session(
@@ -104,7 +106,7 @@ const createProducts = async (req, res) => {
             productCategory: productCategory,
             price: productPrice,
             description: productDescription,
-            status: "Active",
+            status: "ACTIVE",
           },
         ],
         { session }
