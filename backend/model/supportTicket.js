@@ -7,7 +7,7 @@ const supportTicketSchema = new mongoose.Schema(
       ref: "Customer",
       required: true,
     },
-    orderDetailsId: {
+    OrderDetailsId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "OrderDetails",
       required: true,
