@@ -48,7 +48,6 @@ export const supplierOrders = async (req, res) => {
         const product = await Product.findById(ord.productId);
         return {
           _id: ord._id,
-          orderDetails: ord.orderDetails,
           productId: ord.productId,
           productName: product ? product.productName : "Unknown Product",
           quantity: ord.quantity,
@@ -63,3 +62,4 @@ export const supplierOrders = async (req, res) => {
     res.status(500).json("Server Error");
   }
 };
+ 

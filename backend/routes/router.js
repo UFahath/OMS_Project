@@ -35,7 +35,7 @@ router.post("/return", createReturn) //http://localhost:5000/api/return
 router.post('/payment',createPayment); //http://localhost:5000/api/payment
 router.get('/allProducts', getAllProducts)
  router.post('/placeorders',verifyToken,createOrder)
- router.post('./deliveryAddress',createShipment); //http://localhost:5000/api/createShipment
+ router.post('/deliveryAddress',createShipment); //http://localhost:5000/api/createShipment
 router.get('/supplierOrders', verifyToken, supplierOrders)
 export default router;
  
