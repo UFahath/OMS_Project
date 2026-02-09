@@ -3,6 +3,9 @@ import { SupportTicket } from "../model/supportTicket.js";
 export const createSupportTicket = async (req, res) => {
   try {
     const { customerId, OrderDetailsId, subject, description } = req.body;
+    const {userid} = req.user;
+    console.log(userid);
+    
 
     if (!customerId || !OrderDetailsId || !subject || !description) {
       return res.status(400).json({
