@@ -24,7 +24,7 @@ export const createSupportTicket = async (req, res) => {
     
     const ticket = await SupportTicket.create({
       customerId,
-      orderDetailsId,
+      OrderDetailsId,
       subject,
       description,
     });
