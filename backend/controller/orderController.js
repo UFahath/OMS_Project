@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { orderHeader as OrderHeaderModel } from "../model/orderDetails";
-import { OrderDetails } from "../model/orderDetails";
+import {  OrderHeader as OrderHeaderModel } from "../model/orderHeader.js";
+import { OrderDetails } from "../model/orderDetails.js";
 
 const createOrder = async (req, res) => {
   const { productId, quantity, price, totalAmount } = req.body;
