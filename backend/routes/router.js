@@ -15,6 +15,7 @@ import { createReturn } from "../controller/returnController.js";
 import {createOrder  } from "../controller/orderController.js";
 
 import verifyToken from "../middleware/token.js"
+import { createShipment } from "../controller/shipmentController.js";
 const router = express.Router();
  
 router.post("/signup", signup);
@@ -28,6 +29,7 @@ router.get("/supplierProduct",verifyToken,getSupplierProduct); //http://locahost
 router.post("/return", createReturn) //http://localhost:5000/api/return
 router.get('/allProducts', getAllProducts)
  router.post('/placeorders',verifyToken,createOrder)
+ router.post('./deliveryAddress',createShipment); //http://localhost:5000/api/createShipment
 export default router;
  
  
