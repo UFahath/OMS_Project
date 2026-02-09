@@ -1,32 +1,30 @@
 import mongoose from "mongoose";
-import { orderHeader as OrderHeaderModel } from "../model/orderDetails";
-import { OrderDetails } from "../model/orderDetails";
+import { OrderHeader } from "../model/orderHeader.js";
+import { OrderDetails } from "../model/orderDetails.js";
 
 const createOrder = async (req, res) => {
-  const { productId, quantity, price, totalAmount } = req.body;
-  const customerId = req.user.userid;
+  console.log("req body:", req.body);
+
+  const { items, totalAmount } = req.body;
+  const customerId = req.user.id;
 
   try {
-    const newOrderHeader = await OrderHeaderModel.create({
+    const newOrderHeader = await OrderHeader.create({
       customer: customerId,
       totalAmount,
     });
-
-
     const orderId = newOrderHeader._id;
-
- 
-    const newOrderDetails = await OrderDetails.create({
-    orderDetails:orderId,
-      productId,
-      quantity,
-      price,
-    });
-
+    for (const item of items) {
+      const newOrderDetails = await OrderDetails.create({
+        orderDetails: orderId,
+        productId: item.productId,
+        quantity: item.quantity,
+        price: item.price,
+      });
+    }
     res.status(201).json({
-      message: "Order created successfully",
+      message: "Order placed successfully",
       orderHeader: newOrderHeader,
-     
     });
 
   } catch (err) {
