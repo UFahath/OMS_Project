@@ -40,7 +40,7 @@ export default function Navbar() {
                   <Link to="/customer-orders" className="text-white">
                     My Orders
                   </Link> :
-                  <Link to="" className="text-white">
+                  <Link to="/supplier-orders" className="text-white">
                     Orders Recieved
                   </Link>
                 }
