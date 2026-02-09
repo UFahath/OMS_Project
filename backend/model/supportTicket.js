@@ -24,7 +24,6 @@ const supportTicketSchema = new mongoose.Schema(
       trim: true,
       maxlength: 500,
     },
-
     status: {
       type: String,
       enum: ["Pending", "Resolved", "Closed"],
