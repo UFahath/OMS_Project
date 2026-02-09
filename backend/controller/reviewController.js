@@ -23,7 +23,6 @@ export const createReview = async (req, res) => {
         message: "Rating must be between 1 and 5",
       });
     }
-
     const review = await Review.create({
       customerId,
       productId,
