@@ -3,9 +3,8 @@ import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../context/AuthContext";
 
 const AddProduct = () => {
-  const {userId} = useContext(AuthContext)
+  const { token } = useContext(AuthContext)
   const [productData, setProductData] = useState({
-    supplier_id: userId,
     productName: "",
     description: "",
     category: "",
@@ -19,10 +18,17 @@ const AddProduct = () => {
     warehouseCountry: "",
     warehousePincode: "",
   });
+  const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("")
   const [categories, setCategories] = useState([]);
   const fetchCategories = async () => {
-    const res = await axios.get('http://localhost:5000/api/productCategory');
-    setCategories(res.data.categories)
+    try {
+      const res = await axios.get('http://localhost:5000/api/productCategory');
+      setCategories(res.data.categories)
+    } catch (error) {
+      console.log(error);
+    }
+
   }
   useEffect(() => {
     fetchCategories()
@@ -38,7 +44,7 @@ const AddProduct = () => {
   };
 
   // Handle submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const payload = {
@@ -49,6 +55,38 @@ const AddProduct = () => {
     };
 
     console.log("Product payload:", payload);
+    try {
+      const res = await axios.post('http://localhost:5000/api/addProduct',
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      setMessage(res.data.msg)
+      setProductData({
+        productName: "",
+        description: "",
+        category: "",
+        price: "",
+        leadTimeDays: "",
+        stockQuantity: "",
+        warehouseName: "",
+        warehouseAddress: "",
+        warehouseCity: "",
+        warehouseState: "",
+        warehouseCountry: "",
+        warehousePincode: "",
+      })
+    } catch (error) {
+      console.log(error);
+      setErrorMessage(error.response.data)
+      setTimeout(() => {
+        setErrorMessage("")    
+      }, 5000);
+    }
+
   };
 
   return (
@@ -183,7 +221,12 @@ const AddProduct = () => {
             onChange={handleChange}
             className="input h-24 resize-none"
           />
-
+          {message &&
+          <p className="text-md text-green-600">{message} </p>
+          }
+          {errorMessage &&
+          <p className="text-sm text-red-600">{errorMessage} </p>
+          }
           <button
             type="submit"
             className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition"

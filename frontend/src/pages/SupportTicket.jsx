@@ -3,10 +3,9 @@ import AuthContext from "../context/AuthContext";
 import axios from "axios";
 
 const SupportTicket = () => {
-    const { userId } = useContext(AuthContext);
+    const { token } = useContext(AuthContext);
 
     const [formData, setFormData] = useState({
-        customerId: userId,
         orderDetailsId: "",
         subject: "",
         description: "",
@@ -16,8 +15,8 @@ const SupportTicket = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setFormData((prev) => ({ ...prev, customerId: userId }));
-    }, [userId]);
+        setFormData((prev) => ({ ...prev}));
+    }, []);
 
     const handleChange = (e) => {
         setFormData({
@@ -32,12 +31,18 @@ const SupportTicket = () => {
         setMessage("");
 
         try {
-            const res = await axios.post("http://localhost:5000/api/supportTicket", formData);
+            const res = await axios.post("http://localhost:5000/api/supportTicket", 
+                formData,
+                {
+                    headers :{
+                        Authorization : `Bearer ${token}`
+                    }
+                }
+            );
             //   console.log(res);
             setMessage(res.data.message);
             if (res.success) {
                 setFormData({
-                    customerId: userId,
                     orderDetailsId: "",
                     subject: "",
                     description: "",
