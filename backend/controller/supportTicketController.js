@@ -2,18 +2,27 @@ import { SupportTicket } from "../model/supportTicket.js";
 
 export const createSupportTicket = async (req, res) => {
   try {
-    const { customerId, orderDetailsId, subject, description } = req.body;
+    const { customerId, OrderDetailsId, subject, description } = req.body;
     const {userid} = req.user;
     console.log(userid);
     
 
-    if (!customerId || !orderDetailsId || !subject || !description) {
+    if (!customerId || !OrderDetailsId || !subject || !description) {
       return res.status(400).json({
         success: false,
         message: "All required fields must be provided",
       });
     }
 
+    // Prevent duplicates
+      const existing = await Return.findOne({ OrderDetailsId });
+        if (existing) {
+          return res.status(409).json({
+            success: false,
+            message: 'Return request already exists for this order detail',
+          });
+        }
+    
     const ticket = await SupportTicket.create({
       customerId,
       orderDetailsId,
