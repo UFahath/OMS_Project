@@ -3,36 +3,40 @@ import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../context/AuthContext";
 
 const AddProduct = () => {
-  const { token } = useContext(AuthContext)
+  const { token } = useContext(AuthContext);
+
   const [productData, setProductData] = useState({
     productName: "",
-    description: "",
-    category: "",
-    price: "",
-    leadTimeDays: "",
+    productCategory: "",
+    productPrice: "",
+    leadTime: "",
     stockQuantity: "",
+    productDescription: "",
     warehouseName: "",
-    warehouseAddress: "",
     warehouseCity: "",
     warehouseState: "",
     warehouseCountry: "",
     warehousePincode: "",
+    warehouseAdd: "",
   });
+
   const [message, setMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState("");
   const [categories, setCategories] = useState([]);
+
+  // Fetch categories
   const fetchCategories = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/productCategory');
-      setCategories(res.data.categories)
+      const res = await axios.get("http://localhost:5000/api/productCategory");
+      setCategories(res.data.categories);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
+  };
 
-  }
   useEffect(() => {
-    fetchCategories()
-  }, [])
+    fetchCategories();
+  }, []);
 
   // Handle input change
   const handleChange = (e) => {
@@ -43,50 +47,52 @@ const AddProduct = () => {
     }));
   };
 
-  // Handle submit
+  // Submit (no mapping needed now)
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const payload = {
       ...productData,
-      price: Number(productData.price),
-      leadTimeDays: Number(productData.leadTimeDays),
+      productPrice: Number(productData.productPrice),
+      leadTime: Number(productData.leadTime),
       stockQuantity: Number(productData.stockQuantity),
     };
 
-    console.log("Product payload:", payload);
+    console.log("Backend-ready payload:", payload);
+
     try {
-      const res = await axios.post('http://localhost:5000/api/addProduct',
+      const res = await axios.post(
+        "http://localhost:5000/api/addProduct",
         payload,
         {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
-      )
-      setMessage(res.data.msg)
+      );
+
+      setMessage(res.data.msg);
+      setErrorMessage("");
+
       setProductData({
         productName: "",
-        description: "",
-        category: "",
-        price: "",
-        leadTimeDays: "",
+        productCategory: "",
+        productPrice: "",
+        leadTime: "",
         stockQuantity: "",
+        productDescription: "",
         warehouseName: "",
-        warehouseAddress: "",
         warehouseCity: "",
         warehouseState: "",
         warehouseCountry: "",
         warehousePincode: "",
-      })
+        warehouseAdd: "",
+      });
     } catch (error) {
-      console.log(error);
-      setErrorMessage(error.response.data)
-      setTimeout(() => {
-        setErrorMessage("")    
-      }, 5000);
+      console.error(error);
+      setErrorMessage(error.response?.data?.msg || "Something went wrong");
+      setTimeout(() => setErrorMessage(""), 5000);
     }
-
   };
 
   return (
@@ -97,7 +103,6 @@ const AddProduct = () => {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-
           {/* Product Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
@@ -107,18 +112,19 @@ const AddProduct = () => {
               value={productData.productName}
               onChange={handleChange}
               className="input"
+              required
             />
 
             <select
-              name="category"
-              value={productData.category}
+              name="productCategory"
+              value={productData.productCategory}
               onChange={handleChange}
               className="input"
+              required
             >
               <option value="" disabled>
                 Select Product Category
               </option>
-
               {categories.map((cat) => (
                 <option key={cat.category_id} value={cat.category_id}>
                   {cat.category_name}
@@ -128,20 +134,22 @@ const AddProduct = () => {
 
             <input
               type="number"
-              name="price"
+              name="productPrice"
               placeholder="Price"
-              value={productData.price}
+              value={productData.productPrice}
               onChange={handleChange}
               className="input"
+              required
             />
 
             <input
               type="number"
-              name="leadTimeDays"
+              name="leadTime"
               placeholder="Lead Time (Days)"
-              value={productData.leadTimeDays}
+              value={productData.leadTime}
               onChange={handleChange}
               className="input"
+              required
             />
 
             <input
@@ -151,15 +159,17 @@ const AddProduct = () => {
               value={productData.stockQuantity}
               onChange={handleChange}
               className="input"
+              required
             />
           </div>
 
           <textarea
-            name="description"
+            name="productDescription"
             placeholder="Product Description"
-            value={productData.description}
+            value={productData.productDescription}
             onChange={handleChange}
-            className="input h-28 resize-none"
+            className="input h-28 w-xl resize-none"
+            required
           />
 
           {/* Warehouse Info */}
@@ -175,6 +185,7 @@ const AddProduct = () => {
               value={productData.warehouseName}
               onChange={handleChange}
               className="input"
+              required
             />
 
             <input
@@ -184,6 +195,7 @@ const AddProduct = () => {
               value={productData.warehouseCity}
               onChange={handleChange}
               className="input"
+              required
             />
 
             <input
@@ -193,6 +205,7 @@ const AddProduct = () => {
               value={productData.warehouseState}
               onChange={handleChange}
               className="input"
+              required
             />
 
             <input
@@ -202,6 +215,7 @@ const AddProduct = () => {
               value={productData.warehouseCountry}
               onChange={handleChange}
               className="input"
+              required
             />
 
             <input
@@ -211,22 +225,27 @@ const AddProduct = () => {
               value={productData.warehousePincode}
               onChange={handleChange}
               className="input"
+              required
             />
           </div>
 
           <textarea
-            name="warehouseAddress"
+            name="warehouseAdd"
             placeholder="Warehouse Address"
-            value={productData.warehouseAddress}
+            value={productData.warehouseAdd}
             onChange={handleChange}
-            className="input h-24 resize-none"
+            className="input h-24 w-xl resize-none"
+            required
           />
-          {message &&
-          <p className="text-md text-green-600">{message} </p>
-          }
-          {errorMessage &&
-          <p className="text-sm text-red-600">{errorMessage} </p>
-          }
+
+          {message && (
+            <p className="text-md text-green-600">{message}</p>
+          )}
+
+          {errorMessage && (
+            <p className="text-sm text-red-600">{errorMessage}</p>
+          )}
+
           <button
             type="submit"
             className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition"

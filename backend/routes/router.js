@@ -5,10 +5,11 @@ import {
   createProductCategory,
   getProductCategory,
 } from "../controller/productCategoryController.js";
-import { createProducts } from "../controller/productController.js";
+import { createProducts, getAllProducts } from "../controller/productController.js";
 import { createSupportTicket } from "../controller/supportTicketController.js";
 import { createReview } from "../controller/reviewController.js";
 import { createReturn } from "../controller/returnController.js";
+import verifyToken from "../middleware/token.js"
 const router = express.Router();
  
 router.post("/signup", signup);
@@ -19,6 +20,7 @@ router.post("/addProduct",verifyToken, createProducts); // http://localhost:5000
 router.post("/supportTicket", verifyToken,createSupportTicket); // supportTicket 
 router.post("review",createReview)  //http://localhost:5000/api/review
 router.post("/return", createReturn) //http://localhost:5000/api/return
+router.get('/allProducts', getAllProducts)
  
 export default router;
  
