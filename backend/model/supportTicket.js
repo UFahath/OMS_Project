@@ -7,7 +7,7 @@ const supportTicketSchema = new mongoose.Schema(
       ref: "Customer",
       required: true,
     },
-    orderDetailsId: {
+    OrderDetailsId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "OrderDetails",
       required: true,
@@ -24,7 +24,6 @@ const supportTicketSchema = new mongoose.Schema(
       trim: true,
       maxlength: 500,
     },
-
     status: {
       type: String,
       enum: ["Pending", "Resolved", "Closed"],
