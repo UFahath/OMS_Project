@@ -10,24 +10,27 @@ import SupportTicket from './pages/SupportTicket';
 import OnlinePayment from './components/OnlinePayment';
 import CustomerOrders from './components/CustomerOrders';
 import SupplierOrders from './components/SupplierOrders';
+import ProtectedRoute from './components/ProtectedRoute';
+import Shipment from './components/Shipment';
 
 const App = () => {
   return (
     <>
 
-    <Navbar/>
+      <Navbar />
 
-        <Routes>
-          <Route path ='/' element={<Landing />} />
-          <Route path='/login' element = {<LoginSignup/>} />
-          <Route path = '/supplier-products' element = {<SupplierProducts/>} />
-          <Route path='/add-product' element = {<AddProduct/>} />
-          <Route path='/product-list' element = {<ProductListing/>} />
-          <Route path='/support-ticket' element = {<SupportTicket/>} />
-          <Route path='/online-payment' element={<OnlinePayment/>} />
-          <Route path='/customer-orders' element={<CustomerOrders/>} />
-          <Route path='/supplier-orders' element={<SupplierOrders/>} />
-        </Routes>
+      <Routes>
+        <Route path='/' element={<Landing />} />
+        <Route path='/login' element={<LoginSignup />} />
+        <Route path='/supplier-products' element={<ProtectedRoute><SupplierProducts /></ProtectedRoute>} />
+        <Route path='/add-product' element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />
+        <Route path='/product-list' element={<ProductListing />} />
+        <Route path='/support-ticket' element={<ProtectedRoute><SupportTicket /></ProtectedRoute>} />
+        <Route path='/online-payment' element={<ProtectedRoute><OnlinePayment /></ProtectedRoute>} />
+        <Route path='/customer-orders' element={<ProtectedRoute><CustomerOrders /></ProtectedRoute>} />
+        <Route path='/supplier-orders' element={<ProtectedRoute><SupplierOrders /></ProtectedRoute>} />
+        <Route path='/shipping' element={<ProtectedRoute><Shipment /> </ProtectedRoute>} />
+      </Routes>
 
     </>
   )

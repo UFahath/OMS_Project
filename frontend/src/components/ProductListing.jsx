@@ -87,17 +87,13 @@ export default function ProductListing() {
       )
       console.log(res);
       const paymentDetails = {
-            OrderHeaderId: res.data.orderHeader._id,
-            amount: res.data.orderHeader.totalAmount
-          }
-      if (order.paymentMethod == "ONLINE") {
-        navigate('/online-payment', {
-          state: paymentDetails
-        }
-        )
-      } else {
-        alert(res.data.message)
+        OrderHeaderId: res.data.orderHeader._id,
+        amount: res.data.orderHeader.totalAmount,
+        paymentMethod : order.paymentMethod
       }
+      navigate('/shipping', {
+        state: paymentDetails
+      })
     } catch (error) {
       console.log(error);
     }
