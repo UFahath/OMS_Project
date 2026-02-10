@@ -21,8 +21,8 @@ function AuthProvider({ children }) {
         setUserRole(role)
         setToken(token)
         localStorage.setItem("token", token);
-        localStorage.setItem("userRole", userRole);
-        localStorage.setItem("userId", userId)
+        localStorage.setItem("userRole", role);
+        localStorage.setItem("userId", id)
     }
     const logout = () => {
         setUserId(null)

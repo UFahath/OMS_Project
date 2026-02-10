@@ -50,7 +50,7 @@ import { OrderHeader } from "../model/orderHeader.js"
 
           product: {
             _id: "$product._id",
-            name: "$product.name",
+            name: "$product.productName",
             description: "$product.description",
             category: "$product.category",
             price: "$product.price",

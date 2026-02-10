@@ -20,7 +20,7 @@ export default function SupplierOrders() {
           },
         }
       );
-
+      
       // backend returns array directly
       setOrders(res.data.data);
       setOrderCount(res.data.count)
@@ -41,14 +41,14 @@ export default function SupplierOrders() {
       <h2 className="text-2xl font-bold mb-4">Supplier Orders</h2>
       <div className="p-4 text-blue-800 bg-blue-100 w-70 h-16 mb-4 border border-blue-200 rounded-2xl flex justify-between">
         <h2 className="text-2xl font-bold mb-4">Total Orders</h2>
-        <h3 className="text-2xl font-bold mv-4">{orderCount}</h3>
+        <h3 className="text-2xl font-bold mv-4">{orderCount || 0}</h3>
       </div>
 
       {loading ? (
         <p className="text-gray-500">Loading orders...</p>
       ) : error ? (
         <p className="text-red-500">{error}</p>
-      ) : orders.length === 0 ? (
+      ) : orders?.length === 0 ? (
         <p className="text-gray-500">No orders found.</p>
       ) : (
         <div className="overflow-x-auto bg-white rounded-lg shadow">
@@ -80,7 +80,7 @@ export default function SupplierOrders() {
             </thead>
 
             <tbody className="divide-y divide-gray-200">
-              {orders.map((order) => {
+              {orders?.map((order) => {
                 const totalAmount = order.quantity * order.price;
 
                 return (
