@@ -42,7 +42,7 @@ const createProducts = async (req, res) => {
     } = req.body;
 
     const {id:supplierId} = req.user;
-    console.log(`supplier id: ${supplierId}`);
+    // console.log(`supplier id: ${supplierId}`);
     
     if (
       !productName ||
@@ -129,7 +129,7 @@ const createProducts = async (req, res) => {
       await Supplier.create(
         [
           {
-            Supplier: supplierId,
+            supplierId,
             leadTimeDays: leadTime,
             Product: product[0]._id,
           },
