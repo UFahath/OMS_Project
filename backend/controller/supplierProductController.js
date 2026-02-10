@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { Supplier } from "../model/supplierProduct.js";
-import { Product } from "../model/product.js";
+import {Supplier} from "../model/supplierProduct.js";
+
 
 
 //Get Supplier Product
@@ -68,7 +68,7 @@ import { Product } from "../model/product.js";
 const getSupplierProduct =async(req,res)=>{
   
       const supplierId=req.user.id
-      const products=await Supplier.aggregate([
+      const product=await Supplier.aggregate([
         {
           $match:{
               supplierId:new mongoose.Types.ObjectId(supplierId)
@@ -82,7 +82,7 @@ const getSupplierProduct =async(req,res)=>{
       localField: "productId",
       foreignField: "_id",
       as: "productDetails"
-    }
+                }
 
         },
         {
@@ -96,9 +96,9 @@ const getSupplierProduct =async(req,res)=>{
       ])
    return    res.status(200).json({
   success: true,
-  products
+  product
 });
-
 }
 
 export{ getSupplierProduct}
+
