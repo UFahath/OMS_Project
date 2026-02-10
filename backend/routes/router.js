@@ -9,7 +9,7 @@ import { createProducts, getAllProducts } from "../controller/productController.
 import { createSupportTicket } from "../controller/supportTicketController.js";
 import { createReview } from "../controller/reviewController.js";
 
-import { getSupplierProduct } from "../controller/supplierProductController.js";
+import { getSupplierProduct,deleteSupplierProduct } from "../controller/supplierProductController.js";
 
 import { createReturn } from "../controller/returnController.js";
 import verifyToken from "../middleware/token.js"
