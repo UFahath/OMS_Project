@@ -4,7 +4,7 @@ import { Payment } from '../model/payment.js';
 
 export const createPayment = async (req, res) => {
   try {
-    const { OrderHeaderId, amount, paymentMethod, paymentStatus, paymentDate } =
+    const { OrderHeaderId, amount } =
       req.body;
 
     if (!OrderHeaderId || amount === undefined) {
@@ -45,9 +45,8 @@ export const createPayment = async (req, res) => {
     const payment = await Payment.create({
       OrderHeaderId: order._id,
       amount,
-      paymentMethod, 
-      paymentStatus,
-      paymentDate, 
+      paymentMethod: "UPI",
+      paymentStatus : "Paid"
     });
 
     return res.status(201).json({

@@ -9,7 +9,7 @@ import { createProducts, getAllProducts } from "../controller/productController.
 import { createSupportTicket } from "../controller/supportTicketController.js";
 import { createReview } from "../controller/reviewController.js";
 
-import { deleteSupplierProduct, getSupplierProduct } from "../controller/supplierProductController.js";
+import { getSupplierProduct } from "../controller/supplierProductController.js";
 
 import { createReturn } from "../controller/returnController.js";
 import verifyToken from "../middleware/token.js"
@@ -20,7 +20,6 @@ import { createPayment } from "../controller/paymentController.js";
 
 import {createOrder  } from "../controller/orderController.js";
 import { createShipment } from "../controller/shipmentController.js";
-import customerOrders from "../controller/customerorders.js";
 
 const router = express.Router();
  
@@ -38,11 +37,6 @@ router.get('/allProducts', getAllProducts)
  router.post('/placeorders',verifyToken,createOrder)
  router.post('/deliveryAddress',createShipment); //http://localhost:5000/api/createShipment
 router.get('/supplierOrders', verifyToken, supplierOrders)
-
-router.get('/customerorders',verifyToken,customerOrders)
-
-router.delete('/deleteProduct/:id',deleteSupplierProduct);//http://localhost:5000/api/deleteSupplierProduct
-
 export default router;
  
  
