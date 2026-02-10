@@ -5,16 +5,18 @@ import { OrderHeader } from "../model/orderHeader.js";
 import { OrderDetails } from "../model/orderDetails.js";
 
 const createOrder = async (req, res) => {
-  console.log("req body:", req.body);
-
   const { items, totalAmount } = req.body;
   const customerId = req.user.id;
-
+    console.log("check", customerId);
   try {
+    
     const newOrderHeader = await OrderHeader.create({
       customer: customerId,
-      totalAmount,
+      totalAmount
     });
+
+
+    
     const orderId = newOrderHeader._id;
     for (const item of items) {
       const newOrderDetails = await OrderDetails.create({
