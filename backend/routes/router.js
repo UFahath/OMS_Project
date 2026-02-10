@@ -29,7 +29,7 @@ router.post("/productCategory", createProductCategory);
 router.get("/productCategory", getProductCategory);
 router.post("/addProduct",verifyToken, createProducts); // http://localhost:5000/api/addProduct
 router.post("/supportTicket", verifyToken,createSupportTicket); // supportTicket 
-router.post("review",createReview)  //http://localhost:5000/api/review
+router.post("/review",createReview)  //http://localhost:5000/api/review
 router.get("/supplierProduct",verifyToken,getSupplierProduct); //http://locahost:5000/api/supplierProduct
 router.post("/return", createReturn) //http://localhost:5000/api/return
 router.post('/payment',createPayment); //http://localhost:5000/api/payment
