@@ -2,26 +2,26 @@ import mongoose from "mongoose";
 import { OrderDetails } from "../model/orderDetails.js";
 import { Shipment } from "../model/shipment.js";
 import { Supplier } from "../model/supplierProduct.js";
-
+ 
 export const supplierOrders = async (req, res) => {
   try {
     const supplierId = req.user.id;
-
+ 
     // 1. Get products of this supplier
     const supplierProducts = await Supplier.find({Supplier: new mongoose.Types.ObjectId(supplierId)});
     console.log(supplierProducts);
-
-
+ 
+ 
     const supplierProductIds = supplierProducts.map(
       (item) => item.Product
     );
     console.log(supplierProductIds);
-
-
+ 
+ 
     if (supplierProductIds.length === 0) {
       return res.status(200).json([]);
     }
-
+ 
     // 2. Get order details + populate product + order header + customer
     const orders = await OrderDetails.find({
       productId: { $in: supplierProductIds },
@@ -38,23 +38,23 @@ export const supplierOrders = async (req, res) => {
           select: "name address",
         },
       });
-
+ 
     const getAddress = async (id) => {
       const newAddress = await Shipment.findOne({ OrderHeaderId: id });
       const shippingAddress = newAddress?.shippingAddress || "Address not mentioned";
       console.log("shipping", shippingAddress);
-
+ 
       return shippingAddress
     }
-
-
-
-
+ 
+ 
+ 
+ 
     // 3. Format response
     const supplierOrders = await Promise.all( orders.map(async(ord) => {
       const address = await getAddress(ord.orderDetails._id)
       console.log("address", address)
-      
+     
       return({
         orderDetailsId: ord._id,
         productName: ord.productId?.productName || "Unknown Addres",
@@ -65,7 +65,7 @@ export const supplierOrders = async (req, res) => {
     })
      
     }));
-
+ 
   res.status(200).json({
     success: true,
     count: supplierOrders.length,
@@ -79,3 +79,4 @@ export const supplierOrders = async (req, res) => {
   });
 }
 };
+ 
