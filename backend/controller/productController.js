@@ -12,7 +12,7 @@ import { Supplier } from "../model/supplierProduct.js";
 async function getAllProducts(req, res) {
   try {
     const products = await Product.find({});
-    res.status(200).json(products);
+    res.status(200).json(products.filter(e => e.status === "ACTIVE"));
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -42,7 +42,7 @@ const createProducts = async (req, res) => {
     } = req.body;
 
     const {id:supplierId} = req.user;
-    // console.log(`supplier id: ${supplierId}`);
+    console.log(`supplier id: ${supplierId}`);
     
     if (
       !productName ||
@@ -129,7 +129,7 @@ const createProducts = async (req, res) => {
       await Supplier.create(
         [
           {
-            supplierId,
+            Supplier: supplierId,
             leadTimeDays: leadTime,
             Product: product[0]._id,
           },

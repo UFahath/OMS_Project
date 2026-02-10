@@ -13,6 +13,7 @@ import SupplierOrders from './components/SupplierOrders';
 import ProtectedRoute from './components/ProtectedRoute';
 import Shipment from './components/Shipment';
 
+
 const App = () => {
   return (
     <>
@@ -30,6 +31,7 @@ const App = () => {
         <Route path='/customer-orders' element={<ProtectedRoute><CustomerOrders /></ProtectedRoute>} />
         <Route path='/supplier-orders' element={<ProtectedRoute><SupplierOrders /></ProtectedRoute>} />
         <Route path='/shipping' element={<ProtectedRoute><Shipment /> </ProtectedRoute>} />
+     
       </Routes>
 
     </>

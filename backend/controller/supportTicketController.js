@@ -42,4 +42,3 @@ export const createSupportTicket = async (req, res) => {
   }
 };
 
-

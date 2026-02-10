@@ -9,7 +9,7 @@ import { createProducts, getAllProducts } from "../controller/productController.
 import { createSupportTicket } from "../controller/supportTicketController.js";
 import { createReview } from "../controller/reviewController.js";
 
-import { deleteSupplierProduct, getSupplierProduct } from "../controller/supplierProductController.js";
+import { getSupplierProduct } from "../controller/supplierProductController.js";
 
 import { createReturn } from "../controller/returnController.js";
 import verifyToken from "../middleware/token.js"
@@ -29,7 +29,7 @@ router.post("/productCategory", createProductCategory);
 router.get("/productCategory", getProductCategory);
 router.post("/addProduct",verifyToken, createProducts); // http://localhost:5000/api/addProduct
 router.post("/supportTicket", verifyToken,createSupportTicket); // supportTicket 
-router.post("review",createReview)  //http://localhost:5000/api/review
+router.post("/review",createReview)  //http://localhost:5000/api/review
 router.get("/supplierProduct",verifyToken,getSupplierProduct); //http://locahost:5000/api/supplierProduct
 router.post("/return", createReturn) //http://localhost:5000/api/return
 router.post('/payment',createPayment); //http://localhost:5000/api/payment
@@ -38,6 +38,7 @@ router.get('/allProducts', getAllProducts)
  router.post('/deliveryAddress',createShipment); //http://localhost:5000/api/createShipment
 router.get('/supplierOrders', verifyToken, supplierOrders);//
 router.delete('/deleteProduct/:id',deleteSupplierProduct);//http://localhost:5000/api/deleteSupplierProduct
+
 export default router;
  
  
