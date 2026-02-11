@@ -40,6 +40,7 @@ router.get('/allProducts', getAllProducts)
 
 router.get('/supplierOrders', verifyToken, supplierOrders);//
 router.delete('/deleteProduct/:id',deleteSupplierProduct);//http://localhost:5000/api/deleteSupplierProduct
+router.get('/customerOrders',verifyToken, customerOrders)
 
 export default router;
  

@@ -8,7 +8,7 @@ function AuthProvider({ children }) {
         return localStorage.getItem("userId")
     });
     const [userRole, setUserRole] = useState(() => {
-        return localStorage.getItem("userRole")
+        return localStorage.getItem("userRole") || "customer"
     });
     const [token, setToken] = useState(() => {
         return localStorage.getItem("token")

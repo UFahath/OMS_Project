@@ -17,7 +17,9 @@ const SupplierProducts = () => {
           }
         }
       );
-      setProducts(res.data.products)
+      console.log(res);
+      
+      setProducts(res.data.product)
     } catch (error) {
       console.log(error.response.data.msg);
 
@@ -26,7 +28,7 @@ const SupplierProducts = () => {
   }
   useEffect(() => {
     fetchProducts()
-  })
+  },[])
 
   return (
     <>
@@ -41,7 +43,7 @@ const SupplierProducts = () => {
         </div>
         {/* products view */}
         <div className='flex gap-3 flex-wrap'>
-          {products.length > 0 ? (
+          {products?.length > 0 ? (
             products.map((product) => (
               <div
                 key={product._id}
