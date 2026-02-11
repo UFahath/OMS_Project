@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 const LoginSignup = () => {
     const [action, setAction] = useState("login");
     const [role, setRole] = useState("customer");
+    const [errorMessage, setErrorMessage] = useState("");
+    const [signupSuccessMessage, setSignupSuccessMessage] = useState("")
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -17,7 +19,10 @@ const LoginSignup = () => {
         email: "",
         password: "",
     });
-    const [errorMessage, setErrorMessage] = useState("");
+    // signup to login navigate
+    const navigateToLogin = () => {
+        window.location.reload()
+    }
     // handle input change
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -65,12 +70,15 @@ const LoginSignup = () => {
             try {
                 const res = await axios.post('http://localhost:5000/api/signup', payload);
                 console.log("response:", res);
-                login(res.data.userid, res.data.role, res.data.token)
-                if (res.data.role == "customer") {
-                    navigate('/product-list')
-                } else {
-                    navigate('/supplier-products')
-                }
+                // login(res.data.userid, res.data.role, res.data.token)
+                setFormData({
+                    name: "",
+                    phone: "",
+                    address: "",
+                    email: "",
+                    password: "",
+                })
+                setSignupSuccessMessage("User Registered Successfully")
 
             } catch (error) {
                 console.log(error.response.data);
@@ -203,13 +211,22 @@ const LoginSignup = () => {
                     {errorMessage &&
                         <p className="text-red-600 text-sm"> {errorMessage} </p>
                     }
+                    {signupSuccessMessage ?
+                        <div>
+                            <p className="text-green-600">{signupSuccessMessage}</p>
+                            <span className="text-gray-800">Please log in to continue. → </span>
+                            <button className="text-indigo-600"
+                            onClick={navigateToLogin}>Go to Login </button>
+                        </div> :
+                        <button
+                            onClick={handleSubmit}
+                            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 cursor-pointer"
+                        >
+                            {action === "login" ? "Login" : "Sign Up"}
+                        </button>
 
-                    <button
-                        onClick={handleSubmit}
-                        className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 cursor-pointer"
-                    >
-                        {action === "login" ? "Login" : "Sign Up"}
-                    </button>
+                    }
+
                 </div>
             </div>
         </div>

@@ -18,7 +18,7 @@ const SupplierProducts = () => {
         }
       );
       console.log(res);
-      
+
       setProducts(res.data.product)
     } catch (error) {
       console.log(error.response.data.msg);
@@ -26,9 +26,24 @@ const SupplierProducts = () => {
     }
 
   }
+  const handleDelete = async (id) => {
+    try {
+      const res = await axios.delete(`http://localhost:5000/api/deleteProduct/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      window.location.reload()
+    } catch (error) {
+      console.log(error.response.data.msg);
+
+    }
+  }
   useEffect(() => {
     fetchProducts()
-  },[])
+  }, [])
 
   return (
     <>
@@ -42,12 +57,12 @@ const SupplierProducts = () => {
           </Link>
         </div>
         {/* products view */}
-        <div className='flex gap-3 flex-wrap'>
+        <div className='flex gap-3 flex-wrap justify-evenly'>
           {products?.length > 0 ? (
             products.map((product) => (
               <div
                 key={product._id}
-                className='p-4 border rounded-2xl w-2xl flex flex-col justify-between'
+                className={`p-4 border rounded-2xl w-xl flex flex-col justify-between ${product.status != "ACTIVE" && "bg-gray-200"}`}
               >
                 <div className='flex justify-between p-2'>
                   {/* Product Name */}
@@ -67,7 +82,7 @@ const SupplierProducts = () => {
                       className={`mb-2 text-sm font-semibold ${product.status === "ACTIVE" ? "text-green-600" : "text-red-600"
                         }`}
                     >
-                      {product.status}
+                      {product.status == "ACTIVE" ? product.status : "DELETED"}
                     </p>
                   )}
                 </div>
@@ -82,22 +97,26 @@ const SupplierProducts = () => {
                     </p>
                   </>
                 )}
-
-                {/* Optional: CreatedAt */}
-                <p className='text-xs text-gray-400 mt-2'>
-                  Created: {new Date(product.createdAt).toLocaleDateString()}
-                </p>
+                <div className='flex justify-between'>
+                  <p className='text-xs text-gray-400 mt-2'>
+                    Created: {new Date(product.createdAt).toLocaleDateString()}
+                  </p>
+                  {product.status == "ACTIVE" &&
+                    < button className='text-white bg-red-600 p-2 rounded-2xl mt-2 w-40 cursor-pointer'
+                  onClick={() => (handleDelete(product._id))}>Delete</button>
+                }
               </div>
-            ))
-          ) : (
-            <div className='p-3 border rounded-2xl'>
-              <p className='text-2xl text-gray-500'>Nothing Here</p>
-            </div>
-          )}
+              </div>
+        ))
+        ) : (
+        <div className='p-3 border rounded-2xl'>
+          <p className='text-2xl text-gray-500'>Nothing Here</p>
         </div>
-
-
+          )}
       </div>
+
+
+    </div >
 
     </>
   )

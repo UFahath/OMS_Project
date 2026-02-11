@@ -10,7 +10,7 @@ const orderHeaderSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    enum: ["Pending", "Completed", "Cancelled"],
+    enum: ["Pending", "Shipped","Completed", "Cancelled"],
     default: "Pending" 
   },
   totalAmount: {

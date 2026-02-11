@@ -55,26 +55,29 @@ export default function SupplierOrders() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                <th className="px-8 py-3 text-left text-sm font-medium text-gray-500">
                   Order Date and Time
                 </th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                <th className="px-8 py-3 text-left text-sm font-medium text-gray-500">
                   Order Detail ID
                 </th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                <th className="px-8 py-3 text-left text-sm font-medium text-gray-500">
                   Product Name
                 </th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                <th className="px-8 py-3 text-left text-sm font-medium text-gray-500">
                   Quantity
                 </th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                <th className="px-8 py-3 text-left text-sm font-medium text-gray-500">
                   Price
                 </th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                <th className="px-8 py-3 text-left text-sm font-medium text-gray-500">
                   Total Amount
                 </th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                <th className="px-8 py-3 text-left text-sm font-medium text-gray-500">
                   Customer Address
+                </th>
+                <th className="px-8 py-3  w-44 text-left text-sm font-medium text-gray-500">
+                  Action
                 </th>
               </tr>
             </thead>
@@ -111,6 +114,10 @@ export default function SupplierOrders() {
 
                     <td className="px-6 py-4 text-sm text-gray-700">
                       {order.customerAddress || "N/A"}
+                    </td>
+
+                     <td className="px-6 py-4 text-sm text-gray-700">
+                      <button className="text-white bg-amber-400 p-2 rounded-2xl">Mark as shipped</button>
                     </td>
                   </tr>
                 );

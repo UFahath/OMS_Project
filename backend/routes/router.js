@@ -39,9 +39,8 @@ router.get('/allProducts', getAllProducts)
  router.post('/deliveryAddress',createShipment); //http://localhost:5000/api/createShipment
 
 router.get('/supplierOrders', verifyToken, supplierOrders);//
-router.delete('/deleteProduct/:id',deleteSupplierProduct);//http://localhost:5000/api/deleteSupplierProduct
+router.delete('/deleteProduct/:id', verifyToken,deleteSupplierProduct);//http://localhost:5000/api/deleteSupplierProduct
 router.get('/customerOrders',verifyToken, customerOrders)
-
 
 export default router;
  

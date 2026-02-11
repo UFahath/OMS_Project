@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {Supplier} from "../model/supplierProduct.js";
+import { Supplier } from "../model/supplierProduct.js";
 
 import { Product } from "../model/product.js";
 
@@ -65,42 +65,50 @@ const deleteSupplierProduct = async (req, res) => {
 
 
 //getSupplierProduct
-const getSupplierProduct =async(req,res)=>{
-   const supplierId = new mongoose.Types.ObjectId(req.user.id);
+
+const getSupplierProduct = async (req, res) => {
+  const supplierId = new mongoose.Types.ObjectId(req.user.id);
 
 
-      const product=await Supplier.aggregate([
-        {
-          $match:{
-              supplierId:supplierId
-          }
-         
-        },
+  const product = await Supplier.aggregate([
+    {
+      $match: {
+        supplierId: supplierId
+      }
 
-        {
-           $lookup: {
-      from: "products",
-      localField: "Product",
-      foreignField: "_id",
-      as: "productDetails"
-                }
+    },
 
-        },
-        {
-    $unwind: "$productDetails"
-  },
-  {
-    $replaceRoot: {
-      newRoot: "$productDetails"
+    {
+      $lookup: {
+        from: "products",
+        localField: "Product",
+        foreignField: "_id",
+        as: "productDetails"
+      }
+
+    },
+    {
+      $unwind: "$productDetails"
+    },
+    {
+      $replaceRoot: {
+        newRoot: "$productDetails"
+      }
     }
-  }
 
-      ])
-   return res.status(200).json({
-  success: true,
-  product
-});
+  ])
+
+  console.log(product, "supllierProduct")
+  return res.status(200).json({
+    success: true,
+    product
+  });
 }
 
-export{ deleteSupplierProduct,getSupplierProduct}
+// export { getSupplierProduct }
+
+
+
+
+export { deleteSupplierProduct, getSupplierProduct }
 
