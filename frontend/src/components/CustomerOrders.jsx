@@ -1,36 +1,64 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import axios from "axios";
+import AuthContext from "../context/AuthContext";
 
 export default function CustomerOrders() {
+  const { token } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock data - replace with API call
   useEffect(() => {
-    const mockOrders = [
-      {
-        orderId: "ORD1001",
-        date: "2026-02-09",
-        items: [
-          { name: "Earthen Bottle", quantity: 2 },
-          { name: "Nomad Tumbler", quantity: 1 },
-        ],
-        totalAmount: 2000,
-        paymentMethod: "COD",
-        status: "Delivered",
-      },
-      {
-        orderId: "ORD1002",
-        date: "2026-02-07",
-        items: [
-          { name: "Focus Paper Refill", quantity: 3 },
-        ],
-        totalAmount: 267,
-        paymentMethod: "ONLINE",
-        status: "Pending",
-      },
-    ];
+    const fetchOrders = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:5000/api/customerOrders",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-    setOrders(mockOrders);
-  }, []);
+        // Group by orderId
+        const groupedOrders = {};
+
+        res.data.data.forEach((item) => {
+          const orderId = item._id;
+
+          if (!groupedOrders[orderId]) {
+            groupedOrders[orderId] = {
+              orderId,
+              date: new Date(item.orderDate).toLocaleDateString(),
+              status: item.status,
+              items: [],
+              totalAmount: 0,
+            };
+          }
+
+          groupedOrders[orderId].items.push({
+            name: item.product.name,
+            quantity: item.quantity,
+            price: item.orderPrice,
+          });
+
+          groupedOrders[orderId].totalAmount +=
+            item.quantity * item.orderPrice;
+        });
+
+        setOrders(Object.values(groupedOrders));
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (token) fetchOrders();
+  }, [token]);
+
+  if (loading) {
+    return <p className="p-6 text-gray-500">Loading orders...</p>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -58,7 +86,7 @@ export default function CustomerOrders() {
                   <ul className="list-disc list-inside text-gray-700">
                     {order.items.map((item, index) => (
                       <li key={index}>
-                        {item.name} × {item.quantity}
+                        {item.name} × {item.quantity} (₹{item.price})
                       </li>
                     ))}
                   </ul>
@@ -68,12 +96,10 @@ export default function CustomerOrders() {
                   <p className="font-semibold text-gray-800">
                     Total: ₹{order.totalAmount}
                   </p>
-                  <p className="text-sm text-gray-600">
-                    Payment: {order.paymentMethod}
-                  </p>
+
                   <p
                     className={`px-2 py-1 rounded text-white text-sm ${
-                      order.status === "Delivered"
+                      order.status === "Completed"
                         ? "bg-green-600"
                         : order.status === "Pending"
                         ? "bg-yellow-500"

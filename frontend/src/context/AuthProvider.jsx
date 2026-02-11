@@ -8,7 +8,7 @@ function AuthProvider({ children }) {
         return localStorage.getItem("userId")
     });
     const [userRole, setUserRole] = useState(() => {
-        return localStorage.getItem("userRole")
+        return localStorage.getItem("userRole") || "customer"
     });
     const [token, setToken] = useState(() => {
         return localStorage.getItem("token")
@@ -21,8 +21,8 @@ function AuthProvider({ children }) {
         setUserRole(role)
         setToken(token)
         localStorage.setItem("token", token);
-        localStorage.setItem("userRole", userRole);
-        localStorage.setItem("userId", userId)
+        localStorage.setItem("userRole", role);
+        localStorage.setItem("userId", id)
     }
     const logout = () => {
         setUserId(null)

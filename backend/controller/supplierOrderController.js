@@ -6,8 +6,7 @@ import { Supplier } from "../model/supplierProduct.js";
 export const supplierOrders = async (req, res) => {
   try {
     const supplierId = req.user.id;
- 
-    // 1. Get products of this supplier
+
     const supplierProducts = await Supplier.find({Supplier: new mongoose.Types.ObjectId(supplierId)});
     console.log(supplierProducts);
  
@@ -22,7 +21,6 @@ export const supplierOrders = async (req, res) => {
       return res.status(200).json([]);
     }
  
-    // 2. Get order details + populate product + order header + customer
     const orders = await OrderDetails.find({
       productId: { $in: supplierProductIds },
     })
@@ -48,9 +46,6 @@ export const supplierOrders = async (req, res) => {
     }
  
  
- 
- 
-    // 3. Format response
     const supplierOrders = await Promise.all( orders.map(async(ord) => {
       const address = await getAddress(ord.orderDetails._id)
       console.log("address", address)

@@ -129,7 +129,7 @@ const createProducts = async (req, res) => {
       await Supplier.create(
         [
           {
-            Supplier: supplierId,
+            supplierId: supplierId,
             leadTimeDays: leadTime,
             Product: product[0]._id,
           },
