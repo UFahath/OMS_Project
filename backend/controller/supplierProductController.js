@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import {Supplier} from "../model/supplierProduct.js";
 
-
+import { Product } from "../model/product.js";
 
 //Get Supplier Product
 // const getSupplierProduct = async (req, res) => {
@@ -36,35 +36,35 @@ import {Supplier} from "../model/supplierProduct.js";
 // };
 
 
-// //delete Supplier Product
-// const deleteSupplierProduct = async (req, res) => {
-//   try {
-//     let id = req.params.id;
+//delete Supplier Product
+const deleteSupplierProduct = async (req, res) => {
+  try {
+    let id = req.params.id;
 
-//     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
-//       return res.status(400).json({ msg: "Invalid Id" });
-//     }
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ msg: "Invalid Id" });
+    }
 
-//     const productId = new mongoose.Types.ObjectId(id);
-//     const product = await Product.findByIdAndUpdate(
-//       productId,
-//       { $set: { status: "INACTIVE" } },
-//       { new: true }
-//     );
-//     if (!product) {
-//       return res.status(404).json({ msg: "Supplier Product not found" });
-//     }
+    const productId = new mongoose.Types.ObjectId(id);
+    const product = await Product.findByIdAndUpdate(
+      productId,
+      { $set: { status: "INACTIVE" } },
+      { new: true }
+    );
+    if (!product) {
+      return res.status(404).json({ msg: "Supplier Product not found" });
+    }
 
-//     return res.status(200).json({ msg: "Supplier Product deleted successfully" });
+    return res.status(200).json({ msg: "Supplier Product deleted successfully" });
 
-//   } catch (err) {
-//     console.error(err);
-//     return res.status(500).json({ msg: "Internal Server Error" });
-//   }
-// };
-// export { getSupplierProduct, deleteSupplierProduct };
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ msg: "Internal Server Error" });
+  }
+};
 
 
+//getSupplierProduct
 const getSupplierProduct =async(req,res)=>{
    const supplierId = new mongoose.Types.ObjectId(req.user.id);
 
@@ -96,13 +96,11 @@ const getSupplierProduct =async(req,res)=>{
   }
 
       ])
-      
-  console.log(product,"supllierProduct")
-   return    res.status(200).json({
+   return res.status(200).json({
   success: true,
   product
 });
 }
 
-export{ getSupplierProduct}
+export{ deleteSupplierProduct,getSupplierProduct}
 

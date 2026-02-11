@@ -4,8 +4,8 @@ import AuthContext from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function ProductListing() {
-  const { token } = useContext(AuthContext);
   const navigate = useNavigate()
+  const { token } = useContext(AuthContext);
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [order, setOrder] = useState({
@@ -22,7 +22,7 @@ export default function ProductListing() {
     } catch (error) {
       console.log(error);
     }
-
+    
   }
 
   useEffect(() => {
@@ -30,6 +30,9 @@ export default function ProductListing() {
   }, [])
 
   const addToCart = (product) => {
+    if (!token) {
+      navigate('/login')
+    }
     setCart((prev) => {
       const exists = prev.find((item) => item._id === product._id);
       if (exists) {
@@ -59,7 +62,6 @@ export default function ProductListing() {
     0
   );
 
-  // Build order payload whenever cart changes
   useEffect(() => {
     const items = cart.map((item) => ({
       productId: item._id,
@@ -89,7 +91,7 @@ export default function ProductListing() {
       const paymentDetails = {
         OrderHeaderId: res.data.orderHeader._id,
         amount: res.data.orderHeader.totalAmount,
-        paymentMethod : order.paymentMethod
+        paymentMethod: order.paymentMethod
       }
       navigate('/shipping', {
         state: paymentDetails

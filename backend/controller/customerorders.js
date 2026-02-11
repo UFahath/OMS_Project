@@ -50,7 +50,7 @@ import { OrderHeader } from "../model/orderHeader.js"
 
           product: {
             _id: "$product._id",
-            name: "$product.name",
+            name: "$product.productName",
             description: "$product.description",
             category: "$product.category",
             price: "$product.price",
@@ -63,7 +63,7 @@ import { OrderHeader } from "../model/orderHeader.js"
      return res.status(200).json({
       success: true,
       count: orders.length,
-      data: orders
+      data: orders.sort((a,b)=> new Date(b.orderDate) - new Date(a.orderDate) )
     });
 
   } catch (error) {

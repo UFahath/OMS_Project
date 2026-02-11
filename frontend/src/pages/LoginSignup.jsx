@@ -40,7 +40,7 @@ const LoginSignup = () => {
             try {
                 const res = await axios.post('http://localhost:5000/api/login', payload);
                 console.log("response:", res);
-                login(res.data.userid, res.data.role, res.data.token);                
+                login(res.data.userid, res.data.role, res.data.token);
                 if (res.data.role === "customer") {
                     navigate('/product-list')
                 } else {
@@ -65,7 +65,7 @@ const LoginSignup = () => {
             try {
                 const res = await axios.post('http://localhost:5000/api/signup', payload);
                 console.log("response:", res);
-                login(res.data.userid, res.data.role, res.data.token)                
+                login(res.data.userid, res.data.role, res.data.token)
                 if (res.data.role == "customer") {
                     navigate('/product-list')
                 } else {
@@ -81,7 +81,7 @@ const LoginSignup = () => {
 
     return (
         <div className="w-full min-h-screen flex items-center justify-center bg-linear-to-br from-indigo-500 to-purple-600">
-            <div className="bg-white w-96 p-8 rounded-2xl shadow-xl">
+            <div className="bg-white w-96 p-8 m-4 rounded-2xl shadow-xl">
 
                 {/* Action Buttons */}
                 <div className="flex justify-between gap-4 mb-6">
@@ -89,8 +89,8 @@ const LoginSignup = () => {
                         onClick={() => setAction("signup")}
                         className={`flex-1 text-center py-3 rounded-lg font-semibold cursor-pointer transition
               ${action === "signup"
-                                ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                                : "bg-indigo-600 text-white hover:bg-indigo-700"}`}
+                                ? "bg-indigo-600 text-white hover:bg-indigo-700"
+                                : "bg-gray-300 text-gray-600 cursor-not-allowed"}`}
                     >
                         Sign Up
                     </div>
@@ -99,8 +99,8 @@ const LoginSignup = () => {
                         onClick={() => setAction("login")}
                         className={`flex-1 text-center py-3 rounded-lg font-semibold cursor-pointer transition
               ${action === "login"
-                                ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                                : "bg-indigo-600 text-white hover:bg-indigo-700"}`}
+                                ? "bg-indigo-600 text-white hover:bg-indigo-700"
+                                : "bg-gray-300 text-gray-600 cursor-not-allowed"}`}
                     >
                         Login
                     </div>
