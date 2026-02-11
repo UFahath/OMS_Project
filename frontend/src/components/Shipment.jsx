@@ -32,7 +32,10 @@ export default function Shipment() {
             console.log(res.data);
             setStatus("SUCCESS");
             if (state.paymentMethod == "COD") {
-                navigate('/product-list')
+                setTimeout(() => {
+                    navigate('/product-list')
+                }, 3000);
+                
             }else{
                 navigate('/online-payment', {state: orderDetails})
             }

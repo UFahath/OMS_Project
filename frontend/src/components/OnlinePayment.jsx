@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 
 export default function OnlinePayment() {
@@ -87,6 +87,9 @@ export default function OnlinePayment() {
               <p className="font-semibold text-green-700 break-all">
                 {paymentId}
               </p>
+            </div>
+            <div className="mt-3">
+              <Link to='/product-list' className="text-indigo-600 font-semibold">Continue Shopping →</Link>
             </div>
           </div>
         )}

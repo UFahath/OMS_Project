@@ -117,7 +117,7 @@ export default function SupplierOrders() {
                     </td>
 
                      <td className="px-6 py-4 text-sm text-gray-700">
-                      <button className="text-white bg-green-600 p-2 rounded-2xl">Mark as shipped</button>
+                      <button className="text-white bg-amber-400 p-2 rounded-2xl">Mark as shipped</button>
                     </td>
                   </tr>
                 );

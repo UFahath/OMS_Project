@@ -7,7 +7,7 @@ export const supplierOrders = async (req, res) => {
   try {
     const supplierId = req.user.id;
 
-    const supplierProducts = await Supplier.find({Supplier: new mongoose.Types.ObjectId(supplierId)});
+    const supplierProducts = await Supplier.find({supplierId: new mongoose.Types.ObjectId(supplierId)});
     console.log(supplierProducts);
  
  
