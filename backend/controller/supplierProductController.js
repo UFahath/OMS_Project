@@ -66,12 +66,13 @@ const deleteSupplierProduct = async (req, res) => {
 
 //getSupplierProduct
 const getSupplierProduct =async(req,res)=>{
-  
-      const supplierId=req.user.id
+   const supplierId = new mongoose.Types.ObjectId(req.user.id);
+
+
       const product=await Supplier.aggregate([
         {
           $match:{
-              supplierId:new mongoose.Types.ObjectId(supplierId)
+              supplierId:supplierId
           }
          
         },
@@ -79,7 +80,7 @@ const getSupplierProduct =async(req,res)=>{
         {
            $lookup: {
       from: "products",
-      localField: "productId",
+      localField: "Product",
       foreignField: "_id",
       as: "productDetails"
                 }
@@ -93,6 +94,7 @@ const getSupplierProduct =async(req,res)=>{
       newRoot: "$productDetails"
     }
   }
+
       ])
    return res.status(200).json({
   success: true,
