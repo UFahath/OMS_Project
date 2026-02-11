@@ -4,15 +4,8 @@ import { Payment } from '../model/payment.js';
 
 export const createPayment = async (req, res) => {
   try {
-    const { OrderHeaderId, amount } =
-      req.body;
+    const { OrderHeaderId, amount } = req.body;
 
-    if (!OrderHeaderId || amount === undefined) {
-      return res.status(400).json({
-        success: false,
-        message: 'OrderHeaderId and amount are required',
-      });
-    }
     if (!mongoose.Types.ObjectId.isValid(OrderHeaderId)) {
       return res.status(400).json({
         success: false,
@@ -20,12 +13,6 @@ export const createPayment = async (req, res) => {
       });
     }
 
-    if (typeof amount !== 'number' || amount < 1) {
-      return res.status(400).json({
-        success: false,
-        message: 'Amount must be a number and at least 1',
-      });
-    }
     const order = await OrderHeader.findById(OrderHeaderId);
     if (!order) {
       return res.status(404).json({
@@ -45,8 +32,8 @@ export const createPayment = async (req, res) => {
     const payment = await Payment.create({
       OrderHeaderId: order._id,
       amount,
-      paymentMethod: "UPI",
-      paymentStatus : "Paid"
+      paymentMethod: 'UPI',
+      paymentStatus: 'Paid',
     });
 
     return res.status(201).json({
