@@ -2,34 +2,32 @@ import React, { useState, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import AuthContext from "../context/AuthContext";
- 
+
 export default function Shipment() {
-  const { state } = useLocation(); // order data from product page
+  const { state } = useLocation();
   const navigate = useNavigate();
   const { token } = useContext(AuthContext);
- 
+
   const [shipmentAddress, setShipmentAddress] = useState("");
-  const [status, setStatus] = useState("INIT"); // INIT, PROCESSING, SUCCESS, ERROR
+  const [status, setStatus] = useState("INIT");
   const [error, setError] = useState("");
- 
-  // Redirect if state missing (user refreshed)
+
   useEffect(() => {
     if (!state) navigate("/product-list");
   }, [state, navigate]);
- 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
- 
+
     const fullOrder = {
-      ...state, // order data from product page
+      ...state,
       shipmentAddress,
     };
- 
+
     if (state.paymentMode === "COD") {
-      // ✅ For COD, send full order directly to backend
       try {
         setStatus("PROCESSING");
-        const res = await axios.post(
+        await axios.post(
           "http://localhost:5000/api/createOrder",
           fullOrder,
           {
@@ -39,60 +37,95 @@ export default function Shipment() {
           }
         );
         setStatus("SUCCESS");
- 
-        // Optionally show success message then navigate
-        setTimeout(() => {
-          navigate("/product-list");
-        }, 3000);
+        setTimeout(() => navigate("/product-list"), 3000);
       } catch (err) {
         setStatus("ERROR");
-        setError(err.response?.data?.message || "Failed to place order. Try again.");
+        setError(
+          err.response?.data?.message ||
+            "Failed to place order. Try again."
+        );
       }
     } else {
-      // ✅ For ONLINE, navigate to payment page
       navigate("/online-payment", { state: fullOrder });
     }
   };
- 
+
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-6">
-      <div className="bg-white w-full max-w-md rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">
-          Shipping Details
+    <div className="min-h-screen bg-linear-to-br from-indigo-100 via-purple-100 to-pink-100 flex justify-center items-center p-6">
+      <div className="bg-white/90 backdrop-blur-lg w-full max-w-md rounded-2xl shadow-2xl p-8 transition-all duration-300 hover:shadow-indigo-200">
+        
+        <h2 className="text-2xl font-bold text-gray-800 mb-2 text-center">
+          🚚 Shipping Details
         </h2>
- 
+        <p className="text-center text-gray-500 mb-6 text-sm">
+          Enter your delivery information below
+        </p>
+
+        {/* Order Summary */}
+        <div className="bg-gray-50 rounded-lg p-4 mb-6 border">
+          <p className="text-sm text-gray-600">
+            <span className="font-medium">Payment Mode:</span>{" "}
+            <span
+              className={`px-2 py-1 rounded text-xs font-semibold ${
+                state.paymentMode === "COD"
+                  ? "bg-yellow-100 text-yellow-700"
+                  : "bg-green-100 text-green-700"
+              }`}
+            >
+              {state.paymentMode === "COD"? "Cash On Delivery" : "ONLINE"}
+            </span>
+          </p>
+        </div>
+
+        {/* Alerts */}
         {status === "SUCCESS" && (
-          <div className="p-3 mb-4 bg-green-100 text-green-700 rounded">
-            Order placed successfully!
+          <div className="p-3 mb-4 bg-green-100 text-green-700 rounded-lg animate-pulse text-center">
+            ✅ Order placed successfully!
           </div>
         )}
         {status === "ERROR" && error && (
-          <div className="p-3 mb-4 bg-red-100 text-red-700 rounded">{error}</div>
+          <div className="p-3 mb-4 bg-red-100 text-red-700 rounded-lg text-center">
+            ❌ {error}
+          </div>
         )}
- 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">
-              Shipping Address
-            </label>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          
+          {/* Floating Textarea */}
+          <div className="relative">
             <textarea
               value={shipmentAddress}
               onChange={(e) => setShipmentAddress(e.target.value)}
-              className="w-full border p-2 rounded"
-              placeholder="Enter shipping address"
+              className="peer w-full border border-gray-300 p-3 pt-5 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none resize-none transition"
+              placeholder=" "
+              rows={4}
               required
             />
+            <label className="absolute left-3 top-2 text-gray-500 text-sm transition-all 
+              peer-placeholder-shown:top-4 
+              peer-placeholder-shown:text-gray-400 
+              peer-placeholder-shown:text-base 
+              peer-focus:top-2 
+              peer-focus:text-sm 
+              peer-focus:text-indigo-600">
+              Shipping Address
+            </label>
           </div>
- 
+
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={status === "PROCESSING" || status === "SUCCESS"}
-            className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
           >
+            {status === "PROCESSING" && (
+              <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+            )}
+
             {state.paymentMode === "COD"
               ? status === "PROCESSING"
                 ? "Placing Order..."
-                : "Place Order (COD)"
+                : "Place Order"
               : "Continue to Payment"}
           </button>
         </form>
@@ -100,4 +133,3 @@ export default function Shipment() {
     </div>
   );
 }
- 
