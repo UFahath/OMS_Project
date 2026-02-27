@@ -6,13 +6,13 @@ import { OrderHeader } from "../model/orderHeader.js";
 const markAsShipped = async (req, res) => {
     try {
         let id = req.params.id;
-        const { productName, quantity:qty_shipped } = req.body;
+        const {quantity:qty_shipped } = req.body;
 
-        if (!id || !productName || quantity==null) {
+        if (!id || qty_shipped==null) {
             return res.status(400).json({ msg: "All Fields are required" });
         }
 
-        if(typeof quantity !== "number" || quantity<=0) {
+        if(typeof qty_shipped !== "number" || qty_shipped<=0) {
             return res.status(400).json({msg:"Invalid quantity"});
         }
         if(!mongoose.isValidObjectId(id)){
@@ -25,15 +25,15 @@ const markAsShipped = async (req, res) => {
         details.quantity+=qty_shipped;
         await details.save();
 
-        const inventoryProduct = await Inventory.findById(details.productId);
+        const inventoryProduct = await Inventory.findOne({productId:details.productId});
         if(!inventoryProduct) return res.status(404).json({msg:"No Such Inventory Found"})
-        inventoryProduct.stockQuantity-=quantity;
+        inventoryProduct.stockQuantity-=qty_shipped;
         await inventoryProduct.save();
 
         const orderHeader = await OrderHeader.findById(details.orderDetails);
         if(!orderHeader) return res.status(404).json({msg:"No such order Header Found"});
         orderHeader.status="Shipped";
-        orderHeader.save();
+        await orderHeader.save();
         return res.status(200).json({msg:"SuccessFullyUPdated"});
 
     } catch (err) {

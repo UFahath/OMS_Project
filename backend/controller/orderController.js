@@ -1,42 +1,33 @@
 import mongoose from "mongoose";
-
 import { OrderHeader } from "../model/orderHeader.js";
-
 import { OrderDetails } from "../model/orderDetails.js";
 
-const createOrder = async (req, res) => {
-  const { items, totalAmount } = req.body;
-  const customerId = req.user.id;
-    console.log("check", customerId);
-  try {
-    
-    const newOrderHeader = await OrderHeader.create({
-      customer: customerId,
-      totalAmount
-    });
+const createOrder = async (id, items, totalAmount, session) => {
+//  console.log(items)
+  const newOrderHeader = await OrderHeader.create([{
+    customer: id,
+    totalAmount
+  }], { session });
 
+  const orderId = newOrderHeader[0]._id;
 
-    
-    const orderId = newOrderHeader._id;
-    for (const item of items) {
-      const newOrderDetails = await OrderDetails.create({
-        orderDetails: orderId,
-        productId: item.productId,
-        quantity: item.quantity,
-        price: item.price,
-      });
+  for (const item of items) {
+    //  console.log(item)
+    const productIdStr = item.productId.toString().trim();
+    //  console.log(productIdStr,"\n",typeof productIdStr);
+    if (!mongoose.Types.ObjectId.isValid(productIdStr)) {
+      throw new Error(`Invalid productId: ${item.productId}`);
     }
-    res.status(201).json({
-      message: "Order placed successfully",
-      orderHeader: newOrderHeader,
-    });
 
-  } catch (err) {
-    res.status(500).json({
-      message: "Failed to create order",
-      error: err.message,
-    });
+    await OrderDetails.create([{
+      orderDetails: orderId,
+      productId: new mongoose.Types.ObjectId(productIdStr),
+      quantity: item.quantity,
+      price: item.price
+    }], { session });
   }
+
+  return orderId;
 };
 
 export { createOrder };

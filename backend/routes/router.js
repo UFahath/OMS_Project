@@ -22,7 +22,7 @@ import {createOrder  } from "../controller/orderController.js";
 import { createShipment } from "../controller/shipmentController.js";
 import customerOrders from "../controller/customerorders.js";
 import { markAsShipped } from "../controller/orderDetailsController.js";
-
+import { orderPlacerController } from "../controller/orderPlacerMaster.js";
 const router = express.Router();
  
 router.post("/signup", signup);
@@ -42,6 +42,7 @@ router.get('/supplierOrders', verifyToken, supplierOrders);//
 router.delete('/deleteProduct/:id', verifyToken,deleteSupplierProduct);//http://localhost:5000/api/deleteSupplierProduct
 router.get('/customerOrders',verifyToken, customerOrders)
 router.put('/shipping/:id',markAsShipped); //http://localhost:5000/api/shipping/73737737
+router.post('/createOrder',verifyToken,orderPlacerController);
 export default router;
  
   
