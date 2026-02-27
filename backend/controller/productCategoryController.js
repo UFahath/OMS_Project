@@ -51,7 +51,6 @@ export const createProductCategory = async (req, res) => {
   }
 };
 
-//@ReadProductCategory
 export const getProductCategory = async (req, res) => {
   try {
     const productCategory = await ProductCategory.find({}).sort({

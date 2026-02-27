@@ -1,14 +1,10 @@
-// Post Product// Post Product
 
-// import ProductCategory from "../model/productCategoryModel"
-// import {ProductCategory} from "../model/productCategoryModel.js";
 import mongoose from "mongoose";
 import { Warehouse } from "../model/warehouse.js";
 import { Product } from "../model/product.js";
 import { Inventory } from "../model/inventory.js";
 import { Supplier } from "../model/supplierProduct.js";
 
-//getProducts
 async function getAllProducts(req, res) {
   try {
     const products = await Product.find({});
@@ -18,11 +14,8 @@ async function getAllProducts(req, res) {
   }
 }
 
-//Create_Product
 const createProducts = async (req, res) => {
-  //since this controller uses multiple tables fields i used session (for making as one transaction)
   const session = await mongoose.startSession();
-      // start transaction
     session.startTransaction();
 
   try {
@@ -61,8 +54,7 @@ const createProducts = async (req, res) => {
     ) {
       return res.status(400).json({ msg: "All Fields Are Required" });
     }
- 
-    //check product
+
     const productExist = await Product.findOne({ productName }).session(
       session
     );
@@ -84,7 +76,7 @@ const createProducts = async (req, res) => {
       session.endSession();
       return res.status(200).json({ msg: `Existing Inventory Updated` });
     } else {
-      // warehouse
+  
       const warehouse = await Warehouse.create(
         [
           {
@@ -99,7 +91,6 @@ const createProducts = async (req, res) => {
         { session }
       );
 
-      // product
       const product = await Product.create(
         [
           {
@@ -112,8 +103,6 @@ const createProducts = async (req, res) => {
         ],
         { session }
       );
-
-      //  inventory
       await Inventory.create(
         [
           {
@@ -125,7 +114,7 @@ const createProducts = async (req, res) => {
         { session }
       );
 
-      // supplier_product
+  
       await Supplier.create(
         [
           {
@@ -137,7 +126,6 @@ const createProducts = async (req, res) => {
         { session }
       );
 
-      //  commit
       await session.commitTransaction();
       session.endSession();
       return res.status(201).json({

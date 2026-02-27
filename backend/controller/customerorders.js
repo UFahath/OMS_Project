@@ -7,15 +7,11 @@ import { OrderHeader } from "../model/orderHeader.js"
     try{
        const customerId=req.user.id
        const orders=await OrderHeader.aggregate([
-        // first am going to do taking all the orders placed by the customer
-        // 1.match orders by customers
         {
             $match:{
                   customer:new mongoose.Types.ObjectId(customerId)
             }
         },
-
-        // 2.joining the tables 
         {
             $lookup:{
                 from:"orderdetails",
@@ -23,11 +19,11 @@ import { OrderHeader } from "../model/orderHeader.js"
                 foreignField:"orderDetails",
                 as: "orderItems"
             }
-        } , //    3.unwind order items
+        } , 
     {
         $unwind:"$orderItems"
     },
-    // 4 join product table 
+    
     {
         $lookup:{
             from:"products",
@@ -37,7 +33,7 @@ import { OrderHeader } from "../model/orderHeader.js"
             
         }
     },
-    // 5.unwind product
+
     { $unwind: "$product" },
     {
         $project: {
