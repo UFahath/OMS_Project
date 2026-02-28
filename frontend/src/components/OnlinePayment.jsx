@@ -1,112 +1,139 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import AuthContext from "../context/AuthContext";
 
 export default function OnlinePayment() {
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const { token } = useContext(AuthContext);
+
   const [status, setStatus] = useState("INIT");
-  const [paymentId, setPaymentId] = useState(null);
   const [error, setError] = useState(null);
 
-  const { state } = useLocation();
-  const orderId = state?.OrderHeaderId;
-  const totalAmount = state?.amount;
+  useEffect(() => {
+    if (!state) navigate("/product-list");
+  }, [state, navigate]);
 
   const handlePayNow = async () => {
     try {
       setStatus("PROCESSING");
       setError(null);
 
-      const response = await axios.post(
-        "http://localhost:5000/api/payment",
+      await axios.post(
+        "http://localhost:5000/api/createOrder",
+        state,
         {
-          OrderHeaderId: orderId,
-          amount: totalAmount,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-      if (response.data.success) {
-        setPaymentId(response.data.data._id);
-        setStatus("SUCCESS");
-      }
+
+      setStatus("SUCCESS");
+      setTimeout(() => navigate("/product-list"), 3000);
     } catch (err) {
-      setStatus("INIT");
-      setError(
-        err.response?.data?.message || "Payment failed. Please try again."
-      );
+      setStatus("ERROR");
+      setError(err.response?.data?.message || "Payment failed. Try again.");
     }
   };
 
+  if (!state) return null;
+
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-6">
-      <div className="bg-white w-full max-w-md rounded-xl shadow-lg p-6">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 flex justify-center items-center p-6">
+      <div className="bg-white/90 backdrop-blur-lg w-full max-w-md rounded-2xl shadow-2xl p-8">
 
-        <h2 className="text-xl font-bold text-gray-800 mb-1">
-          Online Payment
-        </h2>
-        <p className="text-sm text-gray-500 mb-4">
-          Order ID: <span className="font-medium">{orderId}</span>
-        </p>
-
-        <div className="bg-gray-50 border rounded-lg p-4 mb-4">
-          <p className="text-sm text-gray-500">Total Amount</p>
-          <p className="text-2xl font-bold text-gray-900">
-            ₹{totalAmount}
+        {/* Header */}
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-bold text-gray-800">💳 Secure Payment</h2>
+          <p className="text-gray-500 text-sm mt-1">
+            Complete your transaction safely
           </p>
         </div>
 
-        <div className="bg-gray-50 m-4 border rounded-lg p-4 text-xs text-gray-700 space-y-1">
-          <p className="font-semibold text-gray-800 text-sm">🔒 Secure Payment
+        {/* Payment Summary */}
+        <div className="bg-gray-50 border rounded-xl p-4 mb-6 space-y-2">
+          <div className="flex justify-between text-sm text-gray-600">
+            <span>Order Amount</span>
+            <span className="font-semibold text-gray-800">
+              ₹{state.totalAmount}
+            </span>
+          </div>
+
+          <div className="flex justify-between text-sm text-gray-600">
+            <span>Payment Method</span>
+            <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-semibold">
+              ONLINE
+            </span>
+          </div>
+          {/* DISCLAIMERS SECTION */}
+        <div className="text-xs text-gray-500 space-y-3 border-t pt-4">
+
+          <p>
+            🔒 Your payment information is encrypted and securely processed.
+            We do not store your card or banking details.
           </p>
-          <p>Payments are processed over a secure and encrypted connection.
+
+          <p>
+            📄 By proceeding, you agree to our Terms & Conditions and Privacy Policy.
           </p>
-          <p>Please verify the order ID, bank, and total amount before proceeding.
+
+          <p>
+            🔄 Orders once confirmed cannot be modified. Refunds (if applicable)
+            will be processed according to our refund policy within 5-7 business days.
           </p>
-          <p className="text-gray-500"> Once confirmed, transactions cannot be reversed.
+
+          <p>
+            📞 Need help? Contact our support team for assistance with your order.
           </p>
+
         </div>
 
+          <div className="text-xs text-gray-400 text-center pt-2">
+            🔒 256-bit SSL encrypted secure payment
+          </div>
+        </div>
+
+        {/* PROCESSING */}
         {status === "PROCESSING" && (
           <div className="text-center py-6">
-            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Processing your payment...</p>
+            <div className="w-12 h-12 mx-auto border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mb-4"></div>
+            <p className="text-gray-600 font-medium">
+              Processing your payment...
+            </p>
           </div>
         )}
 
+        {/* SUCCESS */}
         {status === "SUCCESS" && (
           <div className="text-center py-6">
-            <div className="text-green-600 text-4xl mb-2">✔</div>
+            <div className="w-16 h-16 mx-auto flex items-center justify-center bg-green-100 rounded-full mb-4">
+              <span className="text-3xl text-green-600">✔</span>
+            </div>
             <h3 className="text-lg font-semibold text-green-600">
-              Transaction Completed
+              Payment Successful
             </h3>
             <p className="text-sm text-gray-500 mt-1">
-              Payment received successfully
+              Your order has been confirmed.
             </p>
-
-
-            <div className="mt-4 bg-green-50 border border-green-200 rounded-lg p-3">
-              <p className="text-sm text-gray-600">Payment ID</p>
-              <p className="font-semibold text-green-700 break-all">
-                {paymentId}
-              </p>
-            </div>
-            <div className="mt-3">
-              <Link to='/product-list' className="text-indigo-600 font-semibold">Continue Shopping →</Link>
-            </div>
           </div>
         )}
 
-        {/* Error */}
-        {error && (
-          <div className="text-red-600 text-sm text-center mb-3">
-            {error}
+        {/* ERROR */}
+        {status === "ERROR" && error && (
+          <div className="bg-red-100 text-red-700 p-3 rounded-lg text-sm text-center mb-4">
+            ❌ {error}
           </div>
         )}
 
+        {/* BUTTON */}
         {status === "INIT" && (
           <button
             onClick={handlePayNow}
-            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition"
+            className="w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition shadow-md hover:shadow-lg mb-6"
           >
-            Pay Now
+            Pay ₹{state.totalAmount}
           </button>
         )}
       </div>

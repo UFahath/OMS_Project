@@ -8,8 +8,8 @@ const createShipment = async(orderId,shipmentAddress,session,res)=>{
   //  }
   console.log(orderId,shipmentAddress,session)
    await Shipment.create([{
-    orderId,
-    shipmentAddress,
+    OrderHeaderId: orderId,
+    shippingAddress: shipmentAddress,
     shipmentStatus:"Shipped",
     shipmentDate : new Date()
    }],{session});

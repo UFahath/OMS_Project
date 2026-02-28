@@ -7,7 +7,7 @@ import { Supplier } from "../model/supplierProduct.js";
 
 async function getAllProducts(req, res) {
   try {
-    const products = await Product.find({});
+    const products = await Product.find({}).populate('productCategory');
     res.status(200).json(products.filter(e => e.status === "ACTIVE"));
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -88,8 +88,12 @@ const LoginSignup = () => {
     };
 
     return (
-        <div className="w-full min-h-screen flex items-center justify-center bg-linear-to-br from-indigo-500 to-purple-600">
-            <div className="bg-white w-96 p-8 m-4 rounded-2xl shadow-xl">
+        <div
+            className="w-full min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
+            style={{
+                backgroundImage: "url('https://www.locate2u.com/wp-content/uploads/Amazon-in-store.webp')",
+            }}        >
+            <div className="bg-white/10 backdrop-blur-lg border border-white/30 z-10 text-white w-96 p-8 m-4 rounded-2xl shadow-xl">
 
                 {/* Action Buttons */}
                 <div className="flex justify-between gap-4 mb-6">
@@ -97,7 +101,7 @@ const LoginSignup = () => {
                         onClick={() => setAction("signup")}
                         className={`flex-1 text-center py-3 rounded-lg font-semibold cursor-pointer transition
               ${action === "signup"
-                                ? "bg-indigo-600 text-white hover:bg-indigo-700"
+                                ? "bg-black text-white hover:bg-black"
                                 : "bg-gray-300 text-gray-600 cursor-not-allowed"}`}
                     >
                         Sign Up
@@ -107,7 +111,7 @@ const LoginSignup = () => {
                         onClick={() => setAction("login")}
                         className={`flex-1 text-center py-3 rounded-lg font-semibold cursor-pointer transition
               ${action === "login"
-                                ? "bg-indigo-600 text-white hover:bg-indigo-700"
+                                ? "bg-black text-white hover:bg-black"
                                 : "bg-gray-300 text-gray-600 cursor-not-allowed"}`}
                     >
                         Login
@@ -117,7 +121,7 @@ const LoginSignup = () => {
                 {/* Role Selection */}
                 {action === "signup" ?
                     <div className="mb-6 space-y-3">
-                        <p className="font-semibold text-gray-700">Select Role</p>
+                        <p className="font-semibold text-white">Select Role</p>
 
                         <label className="flex items-center gap-3 border p-3 rounded-lg cursor-pointer">
                             <input
@@ -145,12 +149,12 @@ const LoginSignup = () => {
                     </div>
                     :
                     <div className="flex gap-5 justify-center mb-3">
-                        <button className={`${role == "customer" ? "text-indigo-600" : "text-gray-500"}  p-1 rounded cursor-pointer`}
+                        <button className={`${role == "customer" ? "text-black" : "text-white"}  p-1 rounded cursor-pointer`}
                             onClick={() => (setRole("customer"))}>
                             Customer
                         </button>
                         |
-                        <button className={`${role == "supplier" ? "text-indigo-600" : "text-gray-500"}  p-1 rounded cursor-pointer`}
+                        <button className={`${role == "supplier" ? "text-black" : "text-white"}  p-1 rounded cursor-pointer`}
                             onClick={() => (setRole("supplier"))}>
                             Supplier
                         </button>
@@ -214,13 +218,13 @@ const LoginSignup = () => {
                     {signupSuccessMessage ?
                         <div>
                             <p className="text-green-600">{signupSuccessMessage}</p>
-                            <span className="text-gray-800">Please log in to continue. → </span>
+                            <span className="text-white">Please log in to continue. → </span>
                             <button className="text-indigo-600"
-                            onClick={navigateToLogin}>Go to Login </button>
+                                onClick={navigateToLogin}>Go to Login </button>
                         </div> :
                         <button
                             onClick={handleSubmit}
-                            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 cursor-pointer"
+                            className="w-full bg-black text-white py-3 rounded-lg font-semibold cursor-pointer"
                         >
                             {action === "login" ? "Login" : "Sign Up"}
                         </button>

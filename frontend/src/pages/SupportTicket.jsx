@@ -6,7 +6,7 @@ const SupportTicket = () => {
     const { token } = useContext(AuthContext);
 
     const [formData, setFormData] = useState({
-        orderDetailsId: "",
+        OrderDetailsId: "",
         subject: "",
         description: "",
     });
@@ -43,7 +43,7 @@ const SupportTicket = () => {
             setMessage(res.data.message);
             if (res.success) {
                 setFormData({
-                    orderDetailsId: "",
+                    OrderDetailsId: "",
                     subject: "",
                     description: "",
                 });
@@ -73,9 +73,9 @@ const SupportTicket = () => {
                             Order Details ID
                         </label>
                         <input
-                            name="orderDetailsId"
+                            name="OrderDetailsId"
                             placeholder="Enter order ID"
-                            value={formData.orderDetailsId}
+                            value={formData.OrderDetailsId}
                             onChange={handleChange}
                             required
                             className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-indigo-500 focus:outline-none"
