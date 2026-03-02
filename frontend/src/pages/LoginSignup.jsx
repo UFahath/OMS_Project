@@ -91,7 +91,7 @@ const LoginSignup = () => {
         <div
             className="w-full min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
             style={{
-                backgroundImage: "url('https://www.locate2u.com/wp-content/uploads/Amazon-in-store.webp')",
+                backgroundImage: "url('https://i.pinimg.com/originals/b5/3b/f1/b53bf1fd71eeadcf0ac907ec47a933cf.png')",
             }}        >
             <div className="bg-white/10 backdrop-blur-lg border border-white/30 z-10 text-white w-96 p-8 m-4 rounded-2xl shadow-xl">
 
@@ -149,12 +149,12 @@ const LoginSignup = () => {
                     </div>
                     :
                     <div className="flex gap-5 justify-center mb-3">
-                        <button className={`${role == "customer" ? "text-black" : "text-white"}  p-1 rounded cursor-pointer`}
+                        <button className={`${role == "customer" ? "text-white" : "text-black"}  p-1 rounded cursor-pointer`}
                             onClick={() => (setRole("customer"))}>
                             Customer
                         </button>
                         |
-                        <button className={`${role == "supplier" ? "text-black" : "text-white"}  p-1 rounded cursor-pointer`}
+                        <button className={`${role == "supplier" ? "text-white" : "text-black"}  p-1 rounded cursor-pointer`}
                             onClick={() => (setRole("supplier"))}>
                             Supplier
                         </button>
